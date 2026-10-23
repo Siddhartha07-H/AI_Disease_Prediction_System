@@ -1,13 +1,7 @@
 {
   "functions": {
-    "api/index.py": {
+    "main.py": {
       "includeFiles": "ai_model/**,datasets/**,database/**,frontend/**"
     }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api/index.py"
-    }
-  ]
+  }
 }
