@@ -1,6 +1,6 @@
 [project]
 [tool.vercel]
-entrypoint = "main.py"
+entrypoint = "main:app"
 name = "healthai"
 version = "2.0.0"
 dependencies = [
