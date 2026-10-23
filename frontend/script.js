@@ -58,12 +58,18 @@ function getAccessToken() {
     return sessionStorage.getItem("access_token") || localStorage.getItem("access_token");
 }
 
-function saveAuthSession(token, user) {
+function saveAuthSession(token, user, doctor = null) {
     sessionStorage.setItem("access_token", token);
     localStorage.setItem("access_token", token);
     if (user) {
         sessionStorage.setItem("user", JSON.stringify(user));
         sessionStorage.setItem("patient_name", user.full_name || "Patient");
+        localStorage.setItem("user_role", user.role || "patient");
+        localStorage.setItem("user_name", user.full_name || "Patient");
+    }
+    if (doctor) {
+        localStorage.setItem("doctor_profile", JSON.stringify(doctor));
+        sessionStorage.setItem("doctor_profile", JSON.stringify(doctor));
     }
 }
 
@@ -72,6 +78,10 @@ function clearAuthSession() {
     localStorage.removeItem("access_token");
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("patient_name");
+    localStorage.removeItem("user_role");
+    localStorage.removeItem("user_name");
+    localStorage.removeItem("doctor_profile");
+    sessionStorage.removeItem("doctor_profile");
 }
 
 function authHeaders(extra = {}) {
@@ -228,11 +238,16 @@ function initAuthForms() {
                     throw new Error(typeof data.detail === "string" ? data.detail : "Login failed.");
                 }
 
-                saveAuthSession(data.access_token, data.user);
+                saveAuthSession(data.access_token, data.user, data.doctor);
                 triggerHaptic(50);
                 showNativeToast(`Welcome back, ${data.user.full_name}!`);
-                if (msgEl) msgEl.textContent = "Success! Redirecting to Dashboard...";
-                window.location.href = "index.html";
+                if (data.user && data.user.role === "doctor") {
+                    if (msgEl) msgEl.textContent = "Doctor verified! Loading Clinical Command Center...";
+                    setTimeout(() => { window.location.href = "doctor-dashboard.html"; }, 500);
+                } else {
+                    if (msgEl) msgEl.textContent = "Success! Redirecting to Dashboard...";
+                    setTimeout(() => { window.location.href = "index.html"; }, 500);
+                }
             } catch (err) {
                 if (msgEl) msgEl.textContent = err.message || "Cannot connect to server.";
             } finally {

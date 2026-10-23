@@ -18,6 +18,9 @@ from backend.auth import router as auth_router
 from backend.database import (
     book_appointment,
     cancel_appointment,
+    create_doctor_profile,
+    get_doctor_appointments,
+    get_doctor_by_user_id,
     get_doctors,
     get_health_tips,
     get_prediction_by_id,
@@ -26,6 +29,8 @@ from backend.database import (
     get_user_profile,
     save_prediction,
     save_user_profile,
+    update_appointment_status,
+    update_doctor_profile,
 )
 from backend.security import get_current_user
 
@@ -122,6 +127,8 @@ EMERGENCY_SYMPTOMS = {
 }
 
 
+from backend.security_middleware import SecurityAndTrafficMiddleware
+
 # -------------------------------------------------------------
 # FastAPI App Initialization
 # -------------------------------------------------------------
@@ -131,12 +138,15 @@ app = FastAPI(
     version="2.0.0",
 )
 
-# CORS: Permissive for Web browsers, PWA, and Android WebView
+# OWASP Security Headers & Traffic Rate-Limiting Protection
+app.add_middleware(SecurityAndTrafficMiddleware)
+
+# CORS: Safe configuration supporting Browsers, PWA, Android WebView and Cloud access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origin_regex=r"^https?://.*",
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -167,6 +177,19 @@ class ProfileInput(BaseModel):
     phone: Optional[str] = Field(None, max_length=30)
     emergency_contact: Optional[str] = Field(None, max_length=100)
     allergies: Optional[str] = Field(None, max_length=255)
+
+
+class AppointmentStatusUpdate(BaseModel):
+    status: str = Field(min_length=2, max_length=50)
+    notes: Optional[str] = Field(None, max_length=500)
+
+
+class DoctorProfileUpdate(BaseModel):
+    is_available: Optional[bool] = None
+    contact_phone: Optional[str] = Field(None, max_length=50)
+    clinic_address: Optional[str] = Field(None, max_length=255)
+    specialty: Optional[str] = Field(None, max_length=150)
+
 
 
 # -------------------------------------------------------------
@@ -246,9 +269,10 @@ def predict(
     detected_emergencies = [s.replace("_", " ").title() for s in selected if s in EMERGENCY_SYMPTOMS]
     has_emergency_symptoms = len(detected_emergencies) > 0
 
-    # Build input vector exactly matching model features
+    # Build input vector exactly matching model features (O(1) set lookup for heavy traffic)
+    selected_set = set(selected)
     input_vector = pd.DataFrame(
-        [[1 if s in selected else 0 for s in model_features]],
+        [[1 if s in selected_set else 0 for s in model_features]],
         columns=model_features,
     )
 
@@ -464,6 +488,144 @@ def list_health_tips():
 
 
 # -------------------------------------------------------------
+# Doctor Portal Management Endpoints
+# -------------------------------------------------------------
+@app.get("/api/doctor/me")
+def get_current_doctor_profile(current_user: dict = Depends(get_current_user)):
+    """Retrieve profile and clinical performance stats for the authenticated doctor."""
+    if current_user.get("role") != "doctor":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access restricted to registered medical doctors and specialists.",
+        )
+
+    doc = get_doctor_by_user_id(current_user["id"])
+    if not doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Doctor profile not found for this user account.",
+        )
+
+    appointments = get_doctor_appointments(doctor_id=doc["id"], doctor_name=doc["name"])
+    total_apts = len(appointments)
+    confirmed_apts = len([a for a in appointments if a["status"] == "Confirmed"])
+    completed_apts = len([a for a in appointments if a["status"] == "Completed"])
+    cancelled_apts = len([a for a in appointments if a["status"] == "Cancelled"])
+    unique_patients = len(set(a["patient_id"] for a in appointments if a.get("patient_id")))
+
+    return {
+        "doctor": doc,
+        "stats": {
+            "total_appointments": total_apts,
+            "upcoming_appointments": confirmed_apts,
+            "completed_consultations": completed_apts,
+            "cancelled_appointments": cancelled_apts,
+            "total_patients": unique_patients,
+        },
+    }
+
+
+@app.get("/api/doctor/appointments")
+def list_doctor_appointments(current_user: dict = Depends(get_current_user)):
+    """Retrieve full appointment list for the authenticated doctor."""
+    if current_user.get("role") != "doctor":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access restricted to medical professionals.",
+        )
+
+    doc = get_doctor_by_user_id(current_user["id"])
+    if not doc:
+        raise HTTPException(status_code=404, detail="Doctor profile not found.")
+
+    appointments = get_doctor_appointments(doctor_id=doc["id"], doctor_name=doc["name"])
+    return {
+        "total": len(appointments),
+        "appointments": appointments,
+    }
+
+
+@app.patch("/api/doctor/appointments/{appointment_id}/status")
+def change_appointment_status(
+    appointment_id: int,
+    data: AppointmentStatusUpdate,
+    current_user: dict = Depends(get_current_user),
+):
+    """Update clinical status (Confirmed, Completed, Cancelled) and add consultation notes."""
+    if current_user.get("role") != "doctor":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only attending doctors may update consultation status.",
+        )
+
+    doc = get_doctor_by_user_id(current_user["id"])
+    doc_id = doc["id"] if doc else None
+
+    success = update_appointment_status(
+        appointment_id=appointment_id,
+        status_value=data.status,
+        notes=data.notes,
+        doctor_id=doc_id,
+    )
+    if not success:
+        raise HTTPException(
+            status_code=404,
+            detail="Appointment record not found or unauthorized.",
+        )
+
+    return {"message": f"Appointment status updated to '{data.status}' successfully."}
+
+
+@app.get("/api/doctor/patients/{patient_id}/records")
+def view_patient_medical_history(
+    patient_id: int,
+    current_user: dict = Depends(get_current_user),
+):
+    """Retrieve patient AI diagnostic assessments and health profile for clinical review."""
+    if current_user.get("role") != "doctor":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access restricted to medical doctors.",
+        )
+
+    profile = get_user_profile(patient_id)
+    history = get_prediction_history(patient_id)
+
+    return {
+        "patient": profile,
+        "prediction_history": history,
+        "total_assessments": len(history),
+    }
+
+
+@app.put("/api/doctor/profile")
+def update_doctor_settings(
+    data: DoctorProfileUpdate,
+    current_user: dict = Depends(get_current_user),
+):
+    """Update doctor clinic availability, contact number, or specialty."""
+    if current_user.get("role") != "doctor":
+        raise HTTPException(status_code=403, detail="Doctor access required.")
+
+    doc = get_doctor_by_user_id(current_user["id"])
+    if not doc:
+        raise HTTPException(status_code=404, detail="Doctor profile not found.")
+
+    update_doctor_profile(
+        doctor_id=doc["id"],
+        is_available=data.is_available,
+        contact_phone=data.contact_phone,
+        clinic_address=data.clinic_address,
+        specialty=data.specialty,
+    )
+
+    return {
+        "message": "Doctor profile updated successfully.",
+        "doctor": get_doctor_by_user_id(current_user["id"]),
+    }
+
+
+# -------------------------------------------------------------
 # Serve Static Frontend Files & Web App
 # -------------------------------------------------------------
 if FRONTEND_DIR.exists():
@@ -474,6 +636,18 @@ if FRONTEND_DIR.exists():
     @app.get("/register")
     def serve_register():
         return FileResponse(FRONTEND_DIR / "register.html")
+
+    @app.get("/doctor-login")
+    def serve_doctor_login():
+        return FileResponse(FRONTEND_DIR / "doctor-login.html")
+
+    @app.get("/doctor-register")
+    def serve_doctor_register():
+        return FileResponse(FRONTEND_DIR / "doctor-register.html")
+
+    @app.get("/doctor-dashboard")
+    def serve_doctor_dashboard():
+        return FileResponse(FRONTEND_DIR / "doctor-dashboard.html")
 
     @app.get("/predict-page")
     def serve_predict_page():
@@ -492,4 +666,5 @@ if FRONTEND_DIR.exists():
 
     # Mount entire frontend at root (serves index.html at /, style.css, script.js, *.html)
     app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+
 

@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        targetUrl = getString(R.string.default_web_url)
+
         webView = findViewById(R.id.webView)
         swipeRefresh = findViewById(R.id.swipeRefreshLayout)
         progressBar = findViewById(R.id.progressBar)
@@ -99,8 +101,14 @@ class MainActivity : AppCompatActivity() {
             ) {
                 super.onReceivedError(view, request, error)
                 if (request?.isForMainFrame == true) {
-                    // Try embedded offline fallback or show offline screen
-                    showOfflineScreen()
+                    try {
+                        assets.open("www/index.html").close()
+                        offlineLayout.visibility = View.GONE
+                        webView.visibility = View.VISIBLE
+                        webView.loadUrl("file:///android_asset/www/index.html")
+                    } catch (e: Exception) {
+                        showOfflineScreen()
+                    }
                 }
             }
 

@@ -42,12 +42,14 @@ CREATE TABLE IF NOT EXISTS prediction_history (
 -- 4. Doctors table (Verified specialists for appointment booking)
 CREATE TABLE IF NOT EXISTS doctors (
     id SERIAL PRIMARY KEY,
+    user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(150) NOT NULL,
     specialty VARCHAR(150) NOT NULL,
     experience_years INTEGER DEFAULT 10,
     rating NUMERIC(3, 1) DEFAULT 4.9,
     clinic_address VARCHAR(255) DEFAULT 'Metro Health Center, Suite 400',
     contact_phone VARCHAR(50) DEFAULT '+1 (800) 555-0199',
+    license_number VARCHAR(100),
     is_available BOOLEAN DEFAULT TRUE
 );
 
@@ -62,6 +64,7 @@ CREATE TABLE IF NOT EXISTS appointments (
     time_slot VARCHAR(50) NOT NULL,
     reason TEXT,
     status VARCHAR(50) DEFAULT 'Confirmed',
+    notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -74,7 +77,12 @@ CREATE TABLE IF NOT EXISTS health_tips (
     icon VARCHAR(50) DEFAULT 'heart'
 );
 
--- Ensure prediction_history has rich fields if already created previously
+-- Schema upgrades for existing installations
 ALTER TABLE prediction_history ADD COLUMN IF NOT EXISTS confidence NUMERIC(5, 2) DEFAULT 0.0;
 ALTER TABLE prediction_history ADD COLUMN IF NOT EXISTS severity VARCHAR(50) DEFAULT 'Moderate';
 ALTER TABLE prediction_history ADD COLUMN IF NOT EXISTS doctor_recommendation VARCHAR(150);
+
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS license_number VARCHAR(100);
+ALTER TABLE appointments ADD COLUMN IF NOT EXISTS notes TEXT;
+

@@ -129,6 +129,11 @@
             <p>Sign in to access your predictions and clinical records</p>
         </div>
 
+        <div style="display:flex;background:var(--bg-page);border-radius:var(--radius-sm);padding:4px;margin-bottom:22px;border:1px solid var(--border);">
+            <a href="login.html" style="flex:1;text-align:center;padding:8px 12px;font-size:13px;font-weight:700;color:var(--primary);text-decoration:none;border-radius:6px;background:var(--bg-surface);box-shadow:var(--shadow-sm);">👤 Patient Login</a>
+            <a href="doctor-login.html" style="flex:1;text-align:center;padding:8px 12px;font-size:13px;font-weight:600;color:var(--text-muted);text-decoration:none;border-radius:6px;transition:all 0.2s ease;">⚕️ Doctor Portal</a>
+        </div>
+
         <form id="login-form">
             <div class="form-group">
                 <label for="email">Email Address</label>
@@ -148,13 +153,17 @@
             <button type="submit" class="btn btn-accent" style="width:100%;margin-top:10px;padding:12px;font-size:15px;" id="login-submit-btn">
                 Sign In to Dashboard →
             </button>
+
+            <button type="button" class="btn btn-outline" style="width:100%;margin-top:12px;padding:11px;font-size:14px;border-color:var(--primary);color:var(--primary);font-weight:600;" id="demo-login-btn" onclick="quickDemoLogin()">
+                ⚡ One-Click Demo Patient Sign In
+            </button>
         </form>
 
         <p id="login-message" class="auth-status-msg" role="status" aria-live="polite"></p>
 
         <!-- Demo account quick fill for convenient testing -->
         <div class="demo-credentials-box">
-            <span>New user? Register below or sign in.</span>
+            <span>Demo: <strong>demo@healthai.com</strong> / <strong>Password123!</strong></span>
         </div>
 
         <div class="auth-footer">
@@ -174,6 +183,13 @@
                 passwordInput.type = isPassword ? "text" : "password";
                 toggleBtn.textContent = isPassword ? "🔒" : "👁️";
             });
+        }
+
+        // One-click demo sign in
+        function quickDemoLogin() {
+            document.getElementById("email").value = "demo@healthai.com";
+            document.getElementById("password").value = "Password123!";
+            document.getElementById("login-form").dispatchEvent(new Event("submit"));
         }
     </script>
 </body>

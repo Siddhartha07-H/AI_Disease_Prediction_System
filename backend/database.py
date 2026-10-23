@@ -1,11 +1,15 @@
 
+import atexit
+import logging
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import psycopg2
+from psycopg2.pool import PoolError, ThreadedConnectionPool
 from dotenv import load_dotenv
 
+logger = logging.getLogger("healthai.database")
 
 # Find the main project folder
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -14,25 +18,101 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(PROJECT_ROOT / ".env")
 
 
-# Connect to PostgreSQL
+# -------------------------------------------------------------
+# High-Performance Threaded PostgreSQL Connection Pool
+# Handles concurrent heavy traffic loads and prevents connection exhaustion
+# -------------------------------------------------------------
+_db_pool: Optional[ThreadedConnectionPool] = None
+POOL_MIN_CONNECTIONS = int(os.getenv("DB_POOL_MIN", "2"))
+POOL_MAX_CONNECTIONS = int(os.getenv("DB_POOL_MAX", "25"))
+
+
+def _resolve_db_name() -> str:
+    database_name = os.getenv("DB_NAME", "disease_prediction_db")
+    if os.getenv("AI_MODEL_NAME") == "random_forest_candidate.pkl":
+        database_name = os.getenv("TEST_DB_NAME", "disease_prediction_test_db")
+    return database_name
+
+
+def get_db_pool() -> ThreadedConnectionPool:
+    global _db_pool
+    if _db_pool is None or _db_pool.closed:
+        database_name = _resolve_db_name()
+        _db_pool = ThreadedConnectionPool(
+            minconn=POOL_MIN_CONNECTIONS,
+            maxconn=POOL_MAX_CONNECTIONS,
+            host=os.getenv("DB_HOST", "localhost"),
+            port=os.getenv("DB_PORT", "5432"),
+            database=database_name,
+            user=os.getenv("DB_USER", "postgres"),
+            password=os.getenv("DB_PASSWORD", ""),
+        )
+    return _db_pool
+
+
+class PooledConnectionWrapper:
+    """
+    Transparent proxy for a pooled psycopg2 connection.
+    Intercepts .close() to return the connection to the pool rather than
+    terminating the underlying TCP socket.
+    """
+    def __init__(self, pool: ThreadedConnectionPool, conn):
+        self._pool = pool
+        self._conn = conn
+        self._closed = False
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._conn, name)
+
+    def close(self):
+        if not self._closed:
+            self._closed = True
+            try:
+                if not self._conn.closed:
+                    self._conn.rollback()
+            except Exception:
+                pass
+            try:
+                self._pool.putconn(self._conn)
+            except Exception as exc:
+                logger.warning(f"Failed to return connection to pool: {exc}")
+
+    def __enter__(self):
+        return self._conn
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
 
 def get_connection():
-    # The candidate backend uses a separate test database.
-    database_name = os.getenv("DB_NAME", "")
-
-    if os.getenv("AI_MODEL_NAME") == "random_forest_candidate.pkl":
-        database_name = os.getenv(
-            "TEST_DB_NAME",
-            "disease_prediction_test_db",
+    """
+    Acquire a connection from the connection pool.
+    Gracefully falls back to a direct connection if the pool is unavailable.
+    """
+    try:
+        pool = get_db_pool()
+        raw_conn = pool.getconn()
+        return PooledConnectionWrapper(pool, raw_conn)
+    except Exception as exc:
+        logger.warning(f"Connection pool unavailable, falling back to direct connection: {exc}")
+        return psycopg2.connect(
+            host=os.getenv("DB_HOST", "localhost"),
+            port=os.getenv("DB_PORT", "5432"),
+            database=_resolve_db_name(),
+            user=os.getenv("DB_USER", "postgres"),
+            password=os.getenv("DB_PASSWORD", ""),
         )
 
-    return psycopg2.connect(
-        host=os.getenv("DB_HOST"),
-        port=os.getenv("DB_PORT"),
-        database=database_name,
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-    )
+
+def close_db_pool():
+    global _db_pool
+    if _db_pool is not None and not _db_pool.closed:
+        _db_pool.closeall()
+        _db_pool = None
+
+
+atexit.register(close_db_pool)
+
 
 
 
@@ -426,6 +506,226 @@ def get_health_tips() -> List[Dict[str, Any]]:
             connection.close()
 
 
+# -------------------------------------------------------------
+# Doctor Management Functions
+# -------------------------------------------------------------
+def create_doctor_profile(
+    user_id: int,
+    name: str,
+    specialty: str,
+    experience_years: int = 5,
+    clinic_address: str = "Medical Arts Pavilion",
+    contact_phone: str = "+1 (800) 555-0199",
+    license_number: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Create a linked doctor profile for a doctor user."""
+    connection = None
+    try:
+        connection = get_connection()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO doctors
+                    (user_id, name, specialty, experience_years, rating, clinic_address, contact_phone, license_number, is_available)
+                VALUES (%s, %s, %s, %s, 5.0, %s, %s, %s, TRUE)
+                ON CONFLICT (user_id) DO UPDATE SET
+                    name = EXCLUDED.name,
+                    specialty = EXCLUDED.specialty,
+                    experience_years = EXCLUDED.experience_years,
+                    clinic_address = EXCLUDED.clinic_address,
+                    contact_phone = EXCLUDED.contact_phone,
+                    license_number = EXCLUDED.license_number
+                RETURNING id, name, specialty, experience_years, rating, clinic_address, contact_phone, license_number, is_available
+                """,
+                (user_id, name, specialty, experience_years, clinic_address, contact_phone, license_number),
+            )
+            r = cursor.fetchone()
+        connection.commit()
+        return {
+            "id": r[0],
+            "name": r[1],
+            "specialty": r[2],
+            "experience_years": r[3],
+            "rating": float(r[4]),
+            "clinic_address": r[5],
+            "contact_phone": r[6],
+            "license_number": r[7],
+            "is_available": r[8],
+        }
+    except Exception:
+        if connection is not None:
+            connection.rollback()
+        raise
+    finally:
+        if connection is not None:
+            connection.close()
+
+
+def get_doctor_by_user_id(user_id: int) -> Optional[Dict[str, Any]]:
+    """Fetch doctor profile by associated user_id."""
+    connection = None
+    try:
+        connection = get_connection()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT id, user_id, name, specialty, experience_years, rating, clinic_address, contact_phone, license_number, is_available
+                FROM doctors
+                WHERE user_id = %s
+                """,
+                (user_id,),
+            )
+            r = cursor.fetchone()
+            if not r:
+                return None
+            return {
+                "id": r[0],
+                "user_id": r[1],
+                "name": r[2],
+                "specialty": r[3],
+                "experience_years": r[4],
+                "rating": float(r[5]),
+                "clinic_address": r[6],
+                "contact_phone": r[7],
+                "license_number": r[8],
+                "is_available": r[9],
+            }
+    finally:
+        if connection is not None:
+            connection.close()
+
+
+def get_doctor_appointments(doctor_id: Optional[int], doctor_name: Optional[str] = None) -> List[Dict[str, Any]]:
+    """Fetch all appointments assigned to a doctor along with patient clinical information."""
+    connection = None
+    try:
+        connection = get_connection()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT
+                    a.id, a.user_id, a.doctor_id, a.doctor_name, a.specialty,
+                    a.appointment_date, a.time_slot, a.reason, a.status, a.notes, a.created_at,
+                    u.full_name AS patient_name, u.email AS patient_email,
+                    p.age AS patient_age, p.gender AS patient_gender, p.blood_group AS patient_blood_group,
+                    p.phone AS patient_phone, p.allergies AS patient_allergies
+                FROM appointments a
+                LEFT JOIN users u ON a.user_id = u.id
+                LEFT JOIN user_profiles p ON a.user_id = p.user_id
+                WHERE (a.doctor_id = %s OR LOWER(a.doctor_name) = LOWER(%s))
+                ORDER BY a.appointment_date DESC, a.id DESC
+                """,
+                (doctor_id, doctor_name or ""),
+            )
+            rows = cursor.fetchall()
+
+        return [
+            {
+                "id": r[0],
+                "patient_id": r[1],
+                "doctor_id": r[2],
+                "doctor_name": r[3],
+                "specialty": r[4],
+                "appointment_date": str(r[5]),
+                "time_slot": r[6],
+                "reason": r[7],
+                "status": r[8],
+                "notes": r[9],
+                "created_at": r[10].isoformat() if r[10] else None,
+                "patient": {
+                    "name": r[11] or "Patient",
+                    "email": r[12] or "N/A",
+                    "age": r[13],
+                    "gender": r[14],
+                    "blood_group": r[15],
+                    "phone": r[16],
+                    "allergies": r[17],
+                },
+            }
+            for r in rows
+        ]
+    finally:
+        if connection is not None:
+            connection.close()
+
+
+def update_appointment_status(
+    appointment_id: int,
+    status_value: str,
+    notes: Optional[str] = None,
+    doctor_id: Optional[int] = None,
+) -> bool:
+    """Update appointment status (Confirmed, Completed, Cancelled) and optional clinical notes."""
+    connection = None
+    try:
+        connection = get_connection()
+        with connection.cursor() as cursor:
+            if doctor_id:
+                cursor.execute(
+                    """
+                    UPDATE appointments
+                    SET status = %s, notes = COALESCE(%s, notes)
+                    WHERE id = %s AND (doctor_id = %s OR doctor_id IS NULL)
+                    """,
+                    (status_value, notes, appointment_id, doctor_id),
+                )
+            else:
+                cursor.execute(
+                    """
+                    UPDATE appointments
+                    SET status = %s, notes = COALESCE(%s, notes)
+                    WHERE id = %s
+                    """,
+                    (status_value, notes, appointment_id),
+                )
+            updated = cursor.rowcount > 0
+        connection.commit()
+        return updated
+    except Exception:
+        if connection is not None:
+            connection.rollback()
+        raise
+    finally:
+        if connection is not None:
+            connection.close()
+
+
+def update_doctor_profile(
+    doctor_id: int,
+    is_available: Optional[bool] = None,
+    contact_phone: Optional[str] = None,
+    clinic_address: Optional[str] = None,
+    specialty: Optional[str] = None,
+) -> bool:
+    """Update doctor profile and availability."""
+    connection = None
+    try:
+        connection = get_connection()
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE doctors
+                SET
+                    is_available = COALESCE(%s, is_available),
+                    contact_phone = COALESCE(%s, contact_phone),
+                    clinic_address = COALESCE(%s, clinic_address),
+                    specialty = COALESCE(%s, specialty)
+                WHERE id = %s
+                """,
+                (is_available, contact_phone, clinic_address, specialty, doctor_id),
+            )
+            updated = cursor.rowcount > 0
+        connection.commit()
+        return updated
+    except Exception:
+        if connection is not None:
+            connection.rollback()
+        raise
+    finally:
+        if connection is not None:
+            connection.close()
+
+
 # Test the PostgreSQL connection
 if __name__ == "__main__":
     connection = None
@@ -439,3 +739,4 @@ if __name__ == "__main__":
         if connection is not None:
             connection.close()
             print("Database connection closed.")
+

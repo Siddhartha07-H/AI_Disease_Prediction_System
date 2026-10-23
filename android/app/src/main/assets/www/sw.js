@@ -2,13 +2,16 @@
  * HealthAI - Service Worker for Offline Caching and Fast Loads
  */
 
-const CACHE_NAME = "healthai-v2.0";
+const CACHE_NAME = "healthai-v2.1";
 const STATIC_ASSETS = [
     "/",
     "/index.html",
     "/predict.html",
     "/login.html",
     "/register.html",
+    "/doctor-login.html",
+    "/doctor-register.html",
+    "/doctor-dashboard.html",
     "/privacy.html",
     "/terms.html",
     "/style.css",
