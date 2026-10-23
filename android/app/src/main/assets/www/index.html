@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>HealthAI - Patient Healthcare & AI Diagnostic Dashboard</title>
+    <meta name="description" content="AI-Powered Disease Prediction, Clinical Symptom Checker, Doctor Appointments, and Health Records Management.">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="app-sidebar" aria-label="Main Navigation">
+            <div class="brand-wrapper">
+                <div class="brand-icon">+</div>
+                <div class="brand-info">
+                    <h2>HealthAI</h2>
+                    <span class="brand-badge">Clinical AI v2.0</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-link active">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="predict.html" class="nav-link">
+                    <span class="icon">🩺</span> Predict Disease
+                </a>
+                <a href="#reports-section" class="nav-link">
+                    <span class="icon">📋</span> My Reports
+                </a>
+                <a href="#appointments-section" class="nav-link">
+                    <span class="icon">📅</span> Appointments
+                </a>
+                <a href="#health-tips-section" class="nav-link">
+                    <span class="icon">🌿</span> Health Tips
+                </a>
+                <a href="#profile-section" class="nav-link" onclick="openProfileModal()">
+                    <span class="icon">👤</span> My Profile
+                </a>
+                <a href="doctor-login.html" class="nav-link" style="color:#0d9488;font-weight:700;">
+                    <span class="icon">⚕️</span> Doctor Portal
+                </a>
+                <a href="privacy.html" class="nav-link">
+                    <span class="icon">🛡️</span> Privacy & Terms
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile-badge">
+                    <div class="user-profile-avatar user-avatar-display">P</div>
+                    <div class="user-profile-meta">
+                        <div class="user-profile-name user-name-display">Loading...</div>
+                        <div class="user-profile-role">Verified Patient</div>
+                    </div>
+                </div>
+                <a href="login.html" class="nav-link logout-trigger" style="color:var(--danger);">
+                    <span class="icon">🚪</span> Sign Out
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Viewport -->
+        <main class="main-wrapper" id="main-content">
+
+            <!-- Top Header -->
+            <header class="top-header">
+                <button type="button" class="menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+                    ☰
+                </button>
+
+                <div class="search-box-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="search" id="global-search" placeholder="Search symptoms, diseases, doctors..." aria-label="Search symptoms and conditions">
+                </div>
+
+                <div class="header-actions">
+                    <a href="doctor-login.html" class="btn btn-outline" style="border-color:#0d9488;color:#0d9488;padding:6px 12px;font-size:12px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                        <span>⚕️</span> Doctor Portal
+                    </a>
+                    <button type="button" class="action-btn" id="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+                        🌙
+                    </button>
+                    <button type="button" class="action-btn" onclick="openProfileModal()" title="View Profile" aria-label="Patient Profile">
+                        <div class="user-avatar-display" style="font-size:14px;font-weight:700;">P</div>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Emergency Alert Banner -->
+            <section class="emergency-banner" role="alert">
+                <div class="emergency-banner-content">
+                    <span class="sos-tag">EMERGENCY NOTICE</span>
+                    <span>Experiencing severe chest pain, acute paralysis, or inability to breathe? Seek urgent hospital care immediately!</span>
+                </div>
+                <a href="tel:911" class="btn btn-outline" style="border-color:#e11d48;color:#e11d48;padding:6px 14px;font-size:12px;text-decoration:none;">
+                    🚨 Call 911 / 112
+                </a>
+            </section>
+
+            <!-- Hero Welcome Card -->
+            <section class="hero-banner">
+                <span class="hero-badge">⚡ MACHINE LEARNING HEALTHCARE ASSISTANT</span>
+                <h1>Advanced Clinical Decision Support at Your Fingertips</h1>
+                <p>
+                    Evaluate your symptoms through multi-class diagnostic machine learning, review medical precautions,
+                    and seamlessly connect with verified healthcare specialists.
+                </p>
+                <div class="hero-cta-group">
+                    <a href="predict.html" class="btn btn-primary" id="hero-predict-cta">
+                        Start Symptom Checker →
+                    </a>
+                    <button type="button" class="btn btn-glass" onclick="openAppointmentModalWithSpecialty('')">
+                        Book Doctor Appointment
+                    </button>
+                </div>
+            </section>
+
+            <!-- Real-time Stats Grid -->
+            <section class="stats-grid" aria-label="Health Overview Statistics">
+                <div class="stat-card">
+                    <div class="stat-icon blue">🩺</div>
+                    <div class="stat-details">
+                        <h4>Total Predictions</h4>
+                        <div class="stat-number" id="stat-total-predictions">0</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon teal">🛡️</div>
+                    <div class="stat-details">
+                        <h4>Health Status</h4>
+                        <div class="stat-number" style="font-size:18px;color:var(--success);">Active Monitored</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">📅</div>
+                    <div class="stat-details">
+                        <h4>Booked Appointments</h4>
+                        <div class="stat-number" id="stat-total-appointments">0</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon amber">⚕️</div>
+                    <div class="stat-details">
+                        <h4>Specialist Network</h4>
+                        <div class="stat-number">41 Diseases</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Feature Quick Actions -->
+            <section class="features-grid">
+                <div class="feature-box">
+                    <div>
+                        <div class="feature-icon-badge">🔬</div>
+                        <h3>AI Symptom Checker</h3>
+                        <p>Analyze 132 distinct symptoms using calibrated random forest and decision tree classifiers.</p>
+                    </div>
+                    <a href="predict.html" class="btn btn-accent">Open Checker →</a>
+                </div>
+
+                <div class="feature-box">
+                    <div>
+                        <div class="feature-icon-badge">📑</div>
+                        <h3>Printable Medical Reports</h3>
+                        <p>Generate structured clinical reports with differential diagnoses and precautions for your doctor.</p>
+                    </div>
+                    <a href="#reports-section" class="btn btn-outline">View Reports</a>
+                </div>
+
+                <div class="feature-box">
+                    <div>
+                        <div class="feature-icon-badge">👨‍⚕️</div>
+                        <h3>Consult Verified Doctors</h3>
+                        <p>Schedule in-person or telemedicine consultations with cardiologists, dermatologists, and specialists.</p>
+                    </div>
+                    <button type="button" class="btn btn-outline" onclick="openAppointmentModalWithSpecialty('')">Schedule Visit</button>
+                </div>
+            </section>
+
+            <!-- My Reports / Prediction History -->
+            <section class="card-panel" id="reports-section">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <h2>Recent Health Assessments & Predictions</h2>
+                        <p>Review past AI symptom checks and access downloadable diagnostic summaries.</p>
+                    </div>
+                    <a href="predict.html" class="btn btn-outline" style="font-size:12px;">+ New Check</a>
+                </div>
+
+                <div id="dashboard-history-list" class="history-list">
+                    <div style="padding:20px;text-align:center;color:var(--text-muted);">Loading prediction records...</div>
+                </div>
+            </section>
+
+            <!-- Appointments Section -->
+            <section class="card-panel" id="appointments-section">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <h2>Upcoming Doctor Appointments</h2>
+                        <p>Manage your consultations with verified healthcare practitioners.</p>
+                    </div>
+                    <button type="button" class="btn btn-accent" style="font-size:13px;" onclick="openAppointmentModalWithSpecialty('')">
+                        + Book Appointment
+                    </button>
+                </div>
+
+                <div id="dashboard-appointments-list" class="history-list">
+                    <div style="padding:16px;color:var(--text-muted);font-size:13px;">No scheduled appointments.</div>
+                </div>
+            </section>
+
+            <!-- Curated Health Tips Section -->
+            <section class="card-panel" id="health-tips-section">
+                <div class="panel-header">
+                    <div class="panel-title-group">
+                        <h2>Preventive Wellness & Health Advice</h2>
+                        <p>Daily evidence-based lifestyle tips curated by licensed medical professionals.</p>
+                    </div>
+                </div>
+
+                <div class="features-grid" id="health-tips-container">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Play Store Promotion Banner -->
+            <section class="play-store-banner">
+                <div>
+                    <h3>📱 Get HealthAI on Your Android Device</h3>
+                    <p>Download our official Google Play Store application for offline symptom checks, real-time alerts, and instant report sharing.</p>
+                </div>
+                <a href="#" class="play-store-button" onclick="alert('HealthAI Android APK is ready in the android/ project folder for Play Store release!')">
+                    <span>▶️ GET IT ON</span>
+                    <strong>Google Play</strong>
+                </a>
+            </section>
+
+            <!-- Footer -->
+            <footer class="app-footer">
+                <div>
+                    © 2026 HealthAI Systems Inc. All rights reserved. Version 2.0.0 (Production Release).
+                </div>
+                <div class="footer-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="predict.html">Symptom Checker</a>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Modal: View Medical Report -->
+    <div class="modal-overlay" id="report-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Official AI Health Diagnostic Summary</h3>
+                <button type="button" class="modal-close-btn" onclick="document.getElementById('report-modal').style.display='none'">&times;</button>
+            </div>
+            <div id="report-modal-body">
+                <!-- Report populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Book Doctor Appointment -->
+    <div class="modal-overlay" id="book-appointment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Schedule Doctor Consultation</h3>
+                <button type="button" class="modal-close-btn" onclick="document.getElementById('book-appointment-modal').style.display='none'">&times;</button>
+            </div>
+            <form id="book-appointment-form">
+                <div class="form-group">
+                    <label for="appointment-doctor-select">Select Medical Specialist</label>
+                    <select id="appointment-doctor-select" required>
+                        <option value="">Loading verified doctors...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="apt-date">Preferred Date</label>
+                    <input type="date" id="apt-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="apt-time">Preferred Time Slot</label>
+                    <select id="apt-time" required>
+                        <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                        <option value="10:30 AM - 11:30 AM">10:30 AM - 11:30 AM</option>
+                        <option value="02:00 PM - 03:00 PM">02:00 PM - 03:00 PM</option>
+                        <option value="04:00 PM - 05:00 PM">04:00 PM - 05:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="apt-reason">Symptoms or Consultation Reason</label>
+                    <textarea id="apt-reason" rows="3" placeholder="Briefly describe what symptoms you are experiencing..."></textarea>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+                    <button type="button" class="btn btn-outline" onclick="document.getElementById('book-appointment-modal').style.display='none'">Cancel</button>
+                    <button type="submit" class="btn btn-accent">Confirm Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Patient Profile -->
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Patient Health Card & Profile</h3>
+                <button type="button" class="modal-close-btn" onclick="document.getElementById('profile-modal').style.display='none'">&times;</button>
+            </div>
+            <form id="profile-form">
+                <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+                    <div class="user-avatar-display" style="width:50px;height:50px;font-size:20px;background:var(--primary);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;">P</div>
+                    <div>
+                        <h4 class="user-name-display" style="font-size:16px;">Patient</h4>
+                        <p id="profile-display-email" style="font-size:13px;color:var(--text-muted);"></p>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label for="profile-age">Age (Years)</label>
+                        <input type="number" id="profile-age" min="1" max="120" placeholder="e.g. 32">
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-gender">Gender</label>
+                        <select id="profile-gender">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Non-Binary">Non-Binary</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label for="profile-blood">Blood Group</label>
+                        <select id="profile-blood">
+                            <option value="">Select</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-phone">Contact Phone</label>
+                        <input type="tel" id="profile-phone" placeholder="+1 (555) 012-3456">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="profile-emergency">Emergency Contact (Name & Phone)</label>
+                    <input type="text" id="profile-emergency" placeholder="e.g. Jane Doe - +1 (555) 987-6543">
+                </div>
+                <div class="form-group">
+                    <label for="profile-allergies">Known Allergies / Medications</label>
+                    <input type="text" id="profile-allergies" placeholder="e.g. Penicillin, Peanuts, Aspirin">
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px;">
+                    <button type="button" class="btn btn-outline" onclick="document.getElementById('profile-modal').style.display='none'">Close</button>
+                    <button type="button" class="btn btn-accent" onclick="saveProfileHandler()">Save Health Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js?v=200"></script>
+    <script>
+        // Set today's date as min for appointment picker
+        const dateInput = document.getElementById("apt-date");
+        if (dateInput) {
+            dateInput.min = new Date().toISOString().split("T")[0];
+        }
+
+        async function openProfileModal() {
+            const modal = document.getElementById("profile-modal");
+            if (!modal) return;
+            modal.style.display = "flex";
+            try {
+                const res = await fetch(`${API_URL}/profile`, { headers: authHeaders() });
+                if (res.ok) {
+                    const p = await res.json();
+                    if (p.age) document.getElementById("profile-age").value = p.age;
+                    if (p.gender) document.getElementById("profile-gender").value = p.gender;
+                    if (p.blood_group) document.getElementById("profile-blood").value = p.blood_group;
+                    if (p.phone) document.getElementById("profile-phone").value = p.phone;
+                    if (p.emergency_contact) document.getElementById("profile-emergency").value = p.emergency_contact;
+                    if (p.allergies) document.getElementById("profile-allergies").value = p.allergies;
+                }
+            } catch (err) {
+                console.warn(err);
+            }
+        }
+
+        async function saveProfileHandler() {
+            const payload = {
+                age: document.getElementById("profile-age").value ? parseInt(document.getElementById("profile-age").value) : null,
+                gender: document.getElementById("profile-gender").value || null,
+                blood_group: document.getElementById("profile-blood").value || null,
+                phone: document.getElementById("profile-phone").value || null,
+                emergency_contact: document.getElementById("profile-emergency").value || null,
+                allergies: document.getElementById("profile-allergies").value || null
+            };
+            try {
+                const res = await fetch(`${API_URL}/profile`, {
+                    method: "PUT",
+                    headers: authHeaders({ "Content-Type": "application/json" }),
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    triggerHaptic(50);
+                    showNativeToast("Profile updated successfully!");
+                    document.getElementById("profile-modal").style.display = "none";
+                }
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+    </script>
+</body>
+</html>

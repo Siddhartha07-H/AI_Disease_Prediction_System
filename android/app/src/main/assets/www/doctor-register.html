@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthAI - Doctor & Specialist Onboarding</title>
+    <meta name="description" content="Register as a verified medical doctor or specialist on HealthAI.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, rgba(13, 148, 136, 0.12) 0%, transparent 60%),
+                        radial-gradient(circle at 90% 80%, rgba(37, 99, 235, 0.10) 0%, transparent 60%),
+                        var(--bg-page);
+            padding: 30px 20px;
+        }
+
+        .auth-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 38px 36px;
+            width: 100%;
+            max-width: 540px;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .doctor-badge-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(13, 148, 136, 0.12);
+            color: #0d9488;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(13, 148, 136, 0.25);
+        }
+
+        .auth-brand-icon-doc {
+            width: 54px;
+            height: 54px;
+            background: linear-gradient(135deg, #0d9488, #2563eb);
+            border-radius: var(--radius-md);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: white;
+            box-shadow: 0 6px 18px rgba(13, 148, 136, 0.35);
+            margin-bottom: 10px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 580px) {
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        .password-field-wrapper {
+            position: relative;
+        }
+
+        .toggle-password-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .auth-status-msg {
+            margin-top: 16px;
+            font-size: 13px;
+            text-align: center;
+            min-height: 20px;
+            color: #0d9488;
+            font-weight: 500;
+        }
+
+        .auth-footer {
+            margin-top: 24px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .auth-footer a {
+            color: #0d9488;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="auth-card">
+        <div style="text-align: center;">
+            <div class="doctor-badge-tag">🩺 Clinical Practitioner Application</div>
+            <div>
+                <div class="auth-brand-icon-doc">⚕️</div>
+            </div>
+            <h1 style="font-size:22px;font-weight:800;color:var(--text-primary);letter-spacing:-0.5px;margin-bottom:4px;">
+                Doctor & Specialist Registration
+            </h1>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:24px;">
+                Join HealthAI's verified clinical network to consult patients and manage appointments
+            </p>
+        </div>
+
+        <form id="doctor-register-form">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="doc-name">Full Name (with Dr. prefix)</label>
+                    <input id="doc-name" name="full_name" type="text" placeholder="Dr. Sarah Jenkins, MD" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="doc-email">Medical Email Address</label>
+                    <input id="doc-email" name="email" type="email" placeholder="dr.jenkins@hospital.org" autocomplete="username" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="doc-password">Create Secure Password</label>
+                <div class="password-field-wrapper">
+                    <input id="doc-password" name="password" type="password" placeholder="At least 8 characters" autocomplete="new-password" required minlength="8">
+                    <button type="button" class="toggle-password-btn" id="toggle-password" title="Toggle visibility" aria-label="Toggle password visibility">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="doc-specialty">Primary Medical Specialty</label>
+                    <select id="doc-specialty" name="specialty" required style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-surface);color:var(--text-primary);">
+                        <option value="General Physician / Family Med">General Physician / Family Med</option>
+                        <option value="Cardiologist">Cardiologist</option>
+                        <option value="Dermatologist">Dermatologist</option>
+                        <option value="Gastroenterologist">Gastroenterologist</option>
+                        <option value="Pulmonologist">Pulmonologist</option>
+                        <option value="Neurologist">Neurologist</option>
+                        <option value="Endocrinologist">Endocrinologist</option>
+                        <option value="Infectious Disease Specialist">Infectious Disease Specialist</option>
+                        <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+                        <option value="Pediatrician">Pediatrician</option>
+                        <option value="Oncologist">Oncologist</option>
+                        <option value="Psychiatrist">Psychiatrist</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="doc-experience">Clinical Experience (Years)</label>
+                    <input id="doc-experience" name="experience_years" type="number" min="0" max="60" value="8" required>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="doc-license">Medical Council / License No.</label>
+                    <input id="doc-license" name="license_number" type="text" placeholder="e.g. MED-REG-489201" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="doc-phone">Practice Phone Number</label>
+                    <input id="doc-phone" name="contact_phone" type="tel" placeholder="+1 (800) 555-0144" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="doc-address">Clinic / Hospital Practice Address</label>
+                <input id="doc-address" name="clinic_address" type="text" placeholder="Heart & Vascular Institute, Suite 201, Metro City" required>
+            </div>
+
+            <button type="submit" class="btn" style="width:100%;margin-top:10px;padding:12px;font-size:15px;background:linear-gradient(135deg, #0d9488, #2563eb);color:white;border:none;border-radius:var(--radius-sm);font-weight:700;cursor:pointer;" id="doc-reg-submit-btn">
+                Complete Doctor Registration →
+            </button>
+        </form>
+
+        <p id="doc-reg-msg" class="auth-status-msg" role="status" aria-live="polite"></p>
+
+        <div class="auth-footer">
+            <p>Already registered as a doctor? <a href="doctor-login.html">Sign In to Doctor Portal</a></p>
+            <p style="margin-top:8px;"><a href="register.html">Register as a Patient</a></p>
+        </div>
+    </main>
+
+    <script src="script.js?v=200"></script>
+    <script>
+        // Password toggle
+        const toggleBtn = document.getElementById("toggle-password");
+        const passwordInput = document.getElementById("doc-password");
+        if (toggleBtn && passwordInput) {
+            toggleBtn.addEventListener("click", () => {
+                const isPassword = passwordInput.type === "password";
+                passwordInput.type = isPassword ? "text" : "password";
+                toggleBtn.textContent = isPassword ? "🔒" : "👁️";
+            });
+        }
+
+        // Form submission
+        const form = document.getElementById("doctor-register-form");
+        const msg = document.getElementById("doc-reg-msg");
+        const submitBtn = document.getElementById("doc-reg-submit-btn");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            msg.style.color = "#0d9488";
+            msg.textContent = "Verifying clinical credentials & creating practitioner account...";
+            submitBtn.disabled = true;
+
+            const payload = {
+                full_name: document.getElementById("doc-name").value.trim(),
+                email: document.getElementById("doc-email").value.trim(),
+                password: document.getElementById("doc-password").value,
+                specialty: document.getElementById("doc-specialty").value,
+                experience_years: parseInt(document.getElementById("doc-experience").value, 10) || 5,
+                license_number: document.getElementById("doc-license").value.trim(),
+                contact_phone: document.getElementById("doc-phone").value.trim(),
+                clinic_address: document.getElementById("doc-address").value.trim(),
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/doctor/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.detail || "Registration failed.");
+                }
+
+                localStorage.setItem("access_token", data.access_token);
+                localStorage.setItem("user_role", "doctor");
+                localStorage.setItem("user_name", data.user.full_name);
+                if (data.doctor) {
+                    localStorage.setItem("doctor_profile", JSON.stringify(data.doctor));
+                }
+
+                msg.style.color = "var(--success)";
+                msg.textContent = "Registration complete! Loading Doctor Dashboard...";
+
+                setTimeout(() => {
+                    window.location.href = "doctor-dashboard.html";
+                }, 800);
+
+            } catch (err) {
+                msg.style.color = "var(--danger)";
+                msg.textContent = err.message || "Failed to create doctor account.";
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
