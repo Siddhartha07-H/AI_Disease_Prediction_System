@@ -1,8 +1,14 @@
 
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+# Ensure project root is in sys.path
+_ROOT = Path(__file__).resolve().parent.parent
+if str(_ROOT) not in sys.path:
+    sys.path.insert(0, str(_ROOT))
 
 import joblib
 import numpy as np
@@ -666,5 +672,13 @@ if FRONTEND_DIR.exists():
 
     # Mount entire frontend at root (serves index.html at /, style.css, script.js, *.html)
     app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", "8000"))
+    host = os.getenv("HOST", "0.0.0.0")
+    uvicorn.run("backend.main:app", host=host, port=port, reload=True)
+
 
 
