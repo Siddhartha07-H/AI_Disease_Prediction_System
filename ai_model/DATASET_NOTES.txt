@@ -1,0 +1,29 @@
+AI Disease Prediction Project — Dataset Notes
+
+1. Dataset source page:
+https://www.kaggle.com/datasets/kaushil268/disease-prediction-using-machine-learning
+
+2. Files:
+- Training.csv
+- Testing.csv
+
+3. Training dataset:
+- 4,920 rows
+- 41 disease labels
+- 4,616 duplicate rows
+- No missing values
+
+4. Testing dataset:
+- 42 rows
+- 41 disease labels
+- No missing values
+
+5. Important limitations:
+- The original data collection method has not yet been verified.
+- The dataset may not represent real patients.
+- Duplicate rows can make model evaluation misleading.
+- The model is not clinically validated.
+- Predictions must not be treated as confirmed medical diagnoses.
+
+6. Next action:
+Verify the dataset's original source and obtain suitable independent validation data before considering real medical use.

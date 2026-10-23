@@ -1,0 +1,26 @@
+Actual disease,Predicted disease
+Peptic ulcer diseae,Chronic cholestasis
+Alcoholic hepatitis,Chronic cholestasis
+Fungal infection,Acne
+Jaundice,Hepatitis D
+Bronchial Asthma,Hepatitis C
+Allergy,Urinary tract infection
+Migraine,GERD
+Jaundice,Hepatitis D
+Arthritis,Urinary tract infection
+Dimorphic hemmorhoids(piles),Urinary tract infection
+Chronic cholestasis,Fungal infection
+Psoriasis,Acne
+Gastroenteritis,Urinary tract infection
+Osteoarthristis,Urinary tract infection
+Cervical spondylosis,Urinary tract infection
+GERD,Drug Reaction
+Hyperthyroidism,Hypothyroidism
+(vertigo) Paroymsal  Positional Vertigo,Hypertension 
+AIDS,Impetigo
+Hypertension ,Urinary tract infection
+Paralysis (brain hemorrhage),Urinary tract infection
+Hepatitis C,Urinary tract infection
+Impetigo,Acne
+Varicose veins,Urinary tract infection
+Heart attack,Urinary tract infection

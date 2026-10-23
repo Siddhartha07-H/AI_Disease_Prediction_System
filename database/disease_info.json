@@ -1,0 +1,658 @@
+{
+  "(vertigo) Paroymsal  Positional Vertigo": {
+    "display_name": "Benign Paroxysmal Positional Vertigo (BPPV)",
+    "specialist": "ENT Specialist / Neurologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "BPPV is an inner ear problem that causes brief episodes of vertigo (spinning sensations) when your head is moved into certain positions.",
+    "precautions": [
+      "Avoid sudden or rapid head movements",
+      "Perform Epley maneuver under specialist guidance",
+      "Sleep with your head slightly elevated using extra pillows",
+      "Take care when getting out of bed in the morning"
+    ],
+    "medications": ["Vestibular sedatives (short term)", "Antihistamines (meclizine, betahistine)", "Anti-emetics if nauseous"],
+    "diet_advice": "Stay well hydrated and limit excessive sodium and caffeine intake.",
+    "emergency_symptoms": ["Sudden severe headache", "Loss of vision or double vision", "Inability to speak or walk"]
+  },
+  "AIDS": {
+    "display_name": "Acquired Immunodeficiency Syndrome (AIDS)",
+    "specialist": "Infectious Disease Specialist",
+    "severity": "Critical",
+    "is_emergency": true,
+    "description": "AIDS is the late stage of HIV infection that occurs when the body's immune system is badly damaged because of the virus.",
+    "precautions": [
+      "Consult an infectious disease specialist immediately",
+      "Adhere strictly to prescribed Antiretroviral Therapy (ART)",
+      "Practice safe hygiene to prevent opportunistic infections",
+      "Get routine blood counts and viral load monitoring"
+    ],
+    "medications": ["Antiretroviral Therapy (ART)", "Prophylactic antibiotics", "Immunizations as advised"],
+    "diet_advice": "High-protein, calorie-rich balanced diet with thoroughly cooked, hygienic foods.",
+    "emergency_symptoms": ["High persistent fever", "Acute breathing difficulty", "Seizures or confusion"]
+  },
+  "Acne": {
+    "display_name": "Acne Vulgaris",
+    "specialist": "Dermatologist",
+    "severity": "Low",
+    "is_emergency": false,
+    "description": "Acne is a skin condition that occurs when hair follicles become plugged with oil and dead skin cells, causing pimples, blackheads, or cysts.",
+    "precautions": [
+      "Wash face twice daily with a gentle, non-comedogenic cleanser",
+      "Do not pop, squeeze, or pick at lesions to prevent scarring",
+      "Avoid touching your face with unwashed hands",
+      "Use oil-free, non-greasy skincare and sunscreen"
+    ],
+    "medications": ["Benzoyl peroxide gel", "Topical retinoids", "Salicylic acid cleanser", "Topical or oral antibiotics"],
+    "diet_advice": "Reduce refined sugars, high-glycemic foods, and dairy if triggered.",
+    "emergency_symptoms": ["Severe spreading facial swelling", "High fever with tender skin warmth"]
+  },
+  "Alcoholic hepatitis": {
+    "display_name": "Alcoholic Hepatitis",
+    "specialist": "Gastroenterologist / Hepatologist",
+    "severity": "High",
+    "is_emergency": false,
+    "description": "Alcoholic hepatitis is inflammation of the liver caused by heavy, long-term alcohol consumption.",
+    "precautions": [
+      "Cease all alcohol consumption immediately and permanently",
+      "Seek medical supervision for alcohol withdrawal and detox",
+      "Undergo liver function and ultrasound imaging tests",
+      "Rest adequately and avoid hepatotoxic medications like high-dose acetaminophen"
+    ],
+    "medications": ["Corticosteroids (in severe cases under supervision)", "Nutritional supplements and thiamine", "Liver support therapy"],
+    "diet_advice": "Nutrient-dense, high-calorie, moderate-protein diet; monitor sodium intake if ascites is present.",
+    "emergency_symptoms": ["Jaundice with confusion (encephalopathy)", "Vomiting blood", "Black tarry stools"]
+  },
+  "Allergy": {
+    "display_name": "Allergic Reaction",
+    "specialist": "Allergist / Immunologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "An allergic reaction occurs when the immune system overreacts to a harmless substance such as pollen, pet dander, or food.",
+    "precautions": [
+      "Identify and eliminate exposure to suspected allergens",
+      "Keep indoor spaces ventilated and air filters clean",
+      "Wash hands and face after outdoor exposure",
+      "Carry an antihistamine or emergency epinephrine if prescribed"
+    ],
+    "medications": ["Oral antihistamines (cetirizine, fexofenadine)", "Nasal corticosteroid spray", "Eye drops for itchy eyes"],
+    "diet_advice": "Avoid known food allergens; drink plenty of warm fluids.",
+    "emergency_symptoms": ["Swelling of lips, tongue, or throat", "Wheezing or difficulty breathing", "Dizziness or fainting (anaphylaxis)"]
+  },
+  "Arthritis": {
+    "display_name": "Arthritis (Joint Inflammation)",
+    "specialist": "Rheumatologist / Orthopedic Specialist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Arthritis involves acute or chronic inflammation of one or more joints, leading to stiffness, pain, and restricted joint movement.",
+    "precautions": [
+      "Engage in low-impact physical exercise such as swimming or walking",
+      "Apply alternating warm and cold compresses for pain relief",
+      "Maintain a healthy body weight to minimize joint load",
+      "Use ergonomic assistive devices during daily tasks"
+    ],
+    "medications": ["NSAIDs (ibuprofen, naproxen)", "Acetaminophen", "Topical pain relief gels", "Disease-modifying anti-rheumatic drugs (DMARDs)"],
+    "diet_advice": "Anti-inflammatory diet rich in omega-3 fatty acids, turmeric, berries, and leafy greens.",
+    "emergency_symptoms": ["Inability to bear any weight with severe sudden joint redness and high fever (possible septic arthritis)"]
+  },
+  "Bronchial Asthma": {
+    "display_name": "Bronchial Asthma",
+    "specialist": "Pulmonologist",
+    "severity": "High",
+    "is_emergency": false,
+    "description": "Asthma is a chronic respiratory condition in which the airways narrow, swell, and produce extra mucus, causing difficulty breathing.",
+    "precautions": [
+      "Carry your rescue inhaler at all times",
+      "Avoid triggers such as smoke, cold air, dust mites, and strong perfumes",
+      "Monitor peak flow readings regularly",
+      "Get an annual influenza vaccination"
+    ],
+    "medications": ["Short-acting beta-agonists (Albuterol rescue inhaler)", "Inhaled corticosteroids (maintenance)", "Leukotriene modifiers"],
+    "diet_advice": "Eat antioxidant-rich fruits and vegetables; avoid sulfites in dried fruits and processed food.",
+    "emergency_symptoms": ["Severe breathlessness unresponsive to rescue inhaler", "Bluish lips or fingertips", "Inability to speak in full sentences"]
+  },
+  "Cervical spondylosis": {
+    "display_name": "Cervical Spondylosis",
+    "specialist": "Orthopedic Surgeon / Neurologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Cervical spondylosis is age-related wear and tear of the spinal discs in the neck, causing neck pain, stiffness, and tingling.",
+    "precautions": [
+      "Practice ergonomic posture when sitting at desks and computer screens",
+      "Perform gentle neck-stretching and strengthening exercises",
+      "Use an orthopedic cervical support pillow",
+      "Take frequent breaks from long screen sessions"
+    ],
+    "medications": ["Muscle relaxants", "NSAIDs for pain relief", "Neuropathic pain agents (gabapentin / pregabalin)"],
+    "diet_advice": "Calcium and Vitamin D rich foods for bone support.",
+    "emergency_symptoms": ["Sudden loss of bowel or bladder control", "Progressive severe arm or hand weakness"]
+  },
+  "Chicken pox": {
+    "display_name": "Chickenpox (Varicella)",
+    "specialist": "Pediatrician / General Physician",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Chickenpox is a highly contagious viral infection causing an itchy blister-like rash all over the body, along with fever.",
+    "precautions": [
+      "Isolate until all blisters have crusted over completely",
+      "Apply calamine lotion to reduce itching",
+      "Keep fingernails short and clean to prevent bacterial infection",
+      "Avoid aspirin in children due to Reye's syndrome risk"
+    ],
+    "medications": ["Paracetamol (acetaminophen) for fever", "Calamine lotion", "Oral antihistamines for itch", "Antiviral (Acyclovir) in high-risk patients"],
+    "diet_advice": "Soft, cool, bland foods if sores are inside the mouth; stay well hydrated with broths and water.",
+    "emergency_symptoms": ["Rash spreading to eyes", "Stiff neck, extreme drowsiness, or breathing problems"]
+  },
+  "Chronic cholestasis": {
+    "display_name": "Chronic Cholestasis",
+    "specialist": "Hepatologist / Gastroenterologist",
+    "severity": "High",
+    "is_emergency": false,
+    "description": "Cholestasis is a condition where bile flow from the liver is slowed or blocked, resulting in jaundice, dark urine, and severe itching.",
+    "precautions": [
+      "Consult a hepatologist for liver imaging and bile acid tests",
+      "Avoid alcohol and non-essential liver-metabolized drugs",
+      "Take lukewarm rather than hot baths to ease skin itching",
+      "Supplement fat-soluble vitamins (A, D, E, K) as advised"
+    ],
+    "medications": ["Ursodeoxycholic acid (UDCA)", "Cholestyramine for pruritus", "Fat-soluble vitamin supplements"],
+    "diet_advice": "Low-fat, easily digestible diet with medium-chain triglycerides.",
+    "emergency_symptoms": ["High fever with chills and severe right upper abdominal pain", "Uncontrolled confusion"]
+  },
+  "Common Cold": {
+    "display_name": "Common Cold (Viral Upper Respiratory Infection)",
+    "specialist": "General Physician",
+    "severity": "Low",
+    "is_emergency": false,
+    "description": "The common cold is a harmless viral infection of your nose and throat, causing runny nose, sore throat, sneezing, and mild fatigue.",
+    "precautions": [
+      "Get plenty of rest and sleep to support immune recovery",
+      "Drink warm fluids like herbal teas, soups, and warm water",
+      "Gargle with warm salt water for sore throat relief",
+      "Wash hands frequently and cover coughs"
+    ],
+    "medications": ["Decongestants", "Saline nasal sprays", "Paracetamol or ibuprofen for body aches", "Throat lozenges"],
+    "diet_advice": "Warm soups, citrus fruits rich in Vitamin C, and plenty of fluids.",
+    "emergency_symptoms": ["Fever above 102°F (38.9°C) lasting over 3 days", "Shortness of breath or painful swallowing"]
+  },
+  "Dengue": {
+    "display_name": "Dengue Fever",
+    "specialist": "Infectious Disease Specialist / Physician",
+    "severity": "High",
+    "is_emergency": true,
+    "description": "Dengue is a mosquito-borne viral infection causing high fever, severe retro-orbital headache, joint/bone pain, and rash.",
+    "precautions": [
+      "Monitor platelet counts and hematocrit daily through blood tests",
+      "Stay aggressively hydrated with oral rehydration salts (ORS) and coconut water",
+      "Strictly avoid aspirin, ibuprofen, and NSAIDs as they increase bleeding risk",
+      "Use mosquito nets and repellents to prevent transmission"
+    ],
+    "medications": ["Paracetamol only for fever and pain", "Oral Rehydration Salts (ORS)", "Intravenous fluids in clinic if dehydrated"],
+    "diet_advice": "Light fluids, papaya leaf extract (supportive), coconut water, pomegranate juice, and soft rice.",
+    "emergency_symptoms": ["Severe abdominal pain", "Persistent vomiting", "Bleeding gums or nose", "Extreme lethargy or restlessness"]
+  },
+  "Diabetes ": {
+    "display_name": "Diabetes Mellitus",
+    "specialist": "Endocrinologist / Diabetologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Diabetes is a chronic metabolic disorder characterized by elevated levels of blood glucose due to insufficient insulin production or action.",
+    "precautions": [
+      "Check fasting and post-prandial blood glucose levels regularly",
+      "Engage in at least 30 minutes of moderate physical activity daily",
+      "Perform daily self-inspection of your feet for cuts or blisters",
+      "Follow your prescribed medication or insulin schedule meticulously"
+    ],
+    "medications": ["Metformin and oral hypoglycemic agents", "Insulin therapy as prescribed", "SGLT2 inhibitors or GLP-1 receptor agonists"],
+    "diet_advice": "Low glycemic index foods, high-fiber vegetables, lean proteins; strictly minimize refined sugars and sodas.",
+    "emergency_symptoms": ["Extremely high blood sugar (>300 mg/dL) with fruity breath odor, nausea, or confusion (DKA)"]
+  },
+  "Dimorphic hemmorhoids(piles)": {
+    "display_name": "Hemorrhoids (Piles)",
+    "specialist": "General Surgeon / Proctologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Hemorrhoids are swollen veins in your lower rectum and anus, causing itching, discomfort, and bright red rectal bleeding during bowel movements.",
+    "precautions": [
+      "Avoid straining during bowel movements",
+      "Take warm sitz baths for 15-20 minutes two to three times a day",
+      "Drink at least 8 to 10 glasses of water daily",
+      "Avoid prolonged sitting on the toilet"
+    ],
+    "medications": ["Topical hemorrhoid creams / hydrocortisone suppositories", "Stool softeners (docusate)", "Fiber supplements (psyllium husk)"],
+    "diet_advice": "High-fiber diet including whole grains, legumes, figs, apples, and leafy greens.",
+    "emergency_symptoms": ["Substantial, continuous rectal bleeding", "Sudden severe pain indicating a thrombosed hemorrhoid"]
+  },
+  "Drug Reaction": {
+    "display_name": "Adverse Drug Reaction",
+    "specialist": "Dermatologist / Allergist",
+    "severity": "High",
+    "is_emergency": true,
+    "description": "An adverse drug reaction is an unexpected, unwanted, or harmful response to a medication, frequently manifesting as a widespread rash, hives, or fever.",
+    "precautions": [
+      "Contact your prescribing physician immediately before stopping or changing medication",
+      "Record the name, dose, and timing of the suspected drug",
+      "Avoid re-taking the medication under any circumstance",
+      "Wear a medical alert bracelet for confirmed drug allergies"
+    ],
+    "medications": ["Antihistamines for itching", "Systemic corticosteroids (prescribed)", "Topical soothing lotions"],
+    "diet_advice": "Drink water to aid renal clearance; light, non-irritating diet.",
+    "emergency_symptoms": ["Blistering skin peeling (Stevens-Johnson syndrome)", "Swelling of face/lips/throat", "Difficulty breathing"]
+  },
+  "Fungal infection": {
+    "display_name": "Fungal Skin Infection",
+    "specialist": "Dermatologist",
+    "severity": "Low",
+    "is_emergency": false,
+    "description": "Fungal skin infections (such as ringworm, athlete's foot, or jock itch) are common infections caused by fungi that thrive in warm, moist areas.",
+    "precautions": [
+      "Keep affected skin areas clean, cool, and completely dry",
+      "Wear breathable, loose-fitting cotton clothing",
+      "Do not share towels, clothing, or personal hygiene items",
+      "Complete the entire course of antifungal medication even after symptoms disappear"
+    ],
+    "medications": ["Topical clotrimazole, terbinafine, or ketoconazole cream", "Oral antifungals (fluconazole, itraconazole for severe cases)", "Antifungal dusting powder"],
+    "diet_advice": "Limit excess sugar and yeast-promoting foods; eat probiotic-rich yogurt.",
+    "emergency_symptoms": ["Spreading red streaks, warmth, or pus indicating secondary bacterial cellulitis"]
+  },
+  "GERD": {
+    "display_name": "Gastroesophageal Reflux Disease (GERD)",
+    "specialist": "Gastroenterologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "GERD is a chronic digestive disease in which stomach acid or bile irritates the lining of the food pipe (esophagus), causing heartburn and acid regurgitation.",
+    "precautions": [
+      "Avoid lying down for at least 2 to 3 hours after eating",
+      "Elevate the head of your bed by 6 inches",
+      "Eat smaller, more frequent meals rather than large heavy dinners",
+      "Avoid triggers like fried foods, citrus, chocolate, mint, and alcohol"
+    ],
+    "medications": ["Proton pump inhibitors (omeprazole, pantoprazole)", "H2 blockers (famotidine)", "Antacids for immediate relief"],
+    "diet_advice": "Oatmeal, non-citrus fruits (bananas, melons), lean poultry, and steamed vegetables.",
+    "emergency_symptoms": ["Crushing chest pain radiating to arm or jaw (mimics heart attack)", "Difficulty or pain when swallowing"]
+  },
+  "Gastroenteritis": {
+    "display_name": "Gastroenteritis (Stomach Flu)",
+    "specialist": "General Physician / Gastroenterologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Gastroenteritis is inflammation of the stomach and intestines, usually caused by viral or bacterial infection, resulting in vomiting and diarrhea.",
+    "precautions": [
+      "Sip oral rehydration solution (ORS) frequently in small amounts",
+      "Follow the BRAT diet (Bananas, Rice, Applesauce, Toast) once vomiting subsides",
+      "Wash hands thoroughly after using the bathroom and before eating",
+      "Rest adequately and avoid dairy products for 48 hours"
+    ],
+    "medications": ["Oral rehydration salts", "Antiemetics (ondansetron if prescribed)", "Probiotics to restore gut flora"],
+    "diet_advice": "Clear broths, rice water, diluted apple juice, electrolytes; avoid spicy, fatty, or caffeinated items.",
+    "emergency_symptoms": ["Inability to keep liquids down for 24 hours", "Sunken eyes, dizziness, or dark urine (severe dehydration)", "High fever"]
+  },
+  "Heart attack": {
+    "display_name": "Myocardial Infarction (Heart Attack)",
+    "specialist": "Cardiologist / Emergency Physician",
+    "severity": "Critical",
+    "is_emergency": true,
+    "description": "A heart attack occurs when the flow of blood to the heart is severely reduced or blocked, usually by a buildup of fat, cholesterol, and plaque in coronary arteries.",
+    "precautions": [
+      "CALL EMERGENCY SERVICES (911 / 112 / 102) IMMEDIATELY",
+      "Chew an aspirin (325 mg) unless allergic or instructed otherwise",
+      "Sit upright and rest quietly while waiting for emergency responders",
+      "Do not drive yourself to the hospital"
+    ],
+    "medications": ["Aspirin", "Nitroglycerin (if previously prescribed)", "Emergency thrombolytics or angioplasty in hospital"],
+    "diet_advice": "Strict cardiac care under hospital supervision.",
+    "emergency_symptoms": ["Chest tightness or crushing pain", "Pain radiating to left arm, neck, jaw, or back", "Cold sweat and breathlessness"]
+  },
+  "Hepatitis B": {
+    "display_name": "Hepatitis B",
+    "specialist": "Hepatologist / Gastroenterologist",
+    "severity": "High",
+    "is_emergency": false,
+    "description": "Hepatitis B is a serious liver infection caused by the hepatitis B virus (HBV), which can become chronic and lead to liver failure, cirrhosis, or cancer.",
+    "precautions": [
+      "Consult a liver specialist for viral load and liver enzyme testing",
+      "Ensure close contacts and family members receive the Hepatitis B vaccine",
+      "Avoid all alcohol and unverified herbal supplements",
+      "Practice safe sex and do not share razors, toothbrushes, or needles"
+    ],
+    "medications": ["Antiviral medications (tenofovir, entecavir)", "Pegylated interferon", "Regular ultrasound monitoring"],
+    "diet_advice": "Clean, home-cooked balanced diet rich in leafy vegetables, whole grains, and lean proteins.",
+    "emergency_symptoms": ["Intense yellowing of eyes and skin (deep jaundice)", "Swollen abdomen", "Mental confusion"]
+  },
+  "Hepatitis C": {
+    "display_name": "Hepatitis C",
+    "specialist": "Hepatologist / Infectious Disease Specialist",
+    "severity": "High",
+    "is_emergency": false,
+    "description": "Hepatitis C is a viral infection that causes liver inflammation, transmitted through contact with infected blood, and can lead to significant liver damage.",
+    "precautions": [
+      "Undergo HCV RNA viral load and genotype testing",
+      "Direct-Acting Antivirals (DAAs) can cure over 95% of cases; complete the course",
+      "Avoid all alcohol to protect liver cells",
+      "Screen regularly for liver fibrosis or cirrhosis"
+    ],
+    "medications": ["Direct-acting antivirals (sofosbuvir, ledipasvir, velpatasvir)", "Liver supportive agents"],
+    "diet_advice": "Plant-forward, antioxidant-rich diet; low sodium if liver scarring is present.",
+    "emergency_symptoms": ["Vomiting blood or dark black stools", "Confusion or extreme lethargy"]
+  },
+  "Hepatitis D": {
+    "display_name": "Hepatitis D",
+    "specialist": "Hepatologist",
+    "severity": "Critical",
+    "is_emergency": false,
+    "description": "Hepatitis D is a liver disease caused by the hepatitis D virus (HDV), which requires the hepatitis B virus to replicate, leading to accelerated liver disease.",
+    "precautions": [
+      "Specialist care at a designated liver center is essential",
+      "Strict monitoring of both HDV RNA and HBV DNA",
+      "Zero alcohol intake",
+      "Check vaccination status and family screening"
+    ],
+    "medications": ["Pegylated interferon alfa", "Bulevirtide (entry inhibitor in approved regions)", "Hepatoprotective care"],
+    "diet_advice": "High-nutrition, liver-protective foods; avoid excessive iron.",
+    "emergency_symptoms": ["Rapidly worsening jaundice", "Ascites (fluid in belly)", "Bleeding tendency"]
+  },
+  "Hepatitis E": {
+    "display_name": "Hepatitis E",
+    "specialist": "Infectious Disease Specialist / Hepatologist",
+    "severity": "High",
+    "is_emergency": false,
+    "description": "Hepatitis E is a liver disease caused by the hepatitis E virus (HEV), mainly transmitted through contaminated drinking water.",
+    "precautions": [
+      "Drink only boiled or filtered purified water",
+      "Avoid raw or undercooked meats, especially pork or shellfish",
+      "CRITICAL: Pregnant women require urgent hospital monitoring as HEV carries high maternal risk",
+      "Get ample physical rest and stay hydrated"
+    ],
+    "medications": ["Supportive hydration and rest", "Ribavirin (in severe or immunocompromised cases)"],
+    "diet_advice": "Easily digestible carbohydrates, boiled vegetables, light soups; avoid oily foods.",
+    "emergency_symptoms": ["Pregnancy with jaundice", "Extreme vomiting and dehydration", "Confusion or disorientation"]
+  },
+  "Hypertension ": {
+    "display_name": "Hypertension (High Blood Pressure)",
+    "specialist": "Cardiologist / Internist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Hypertension is a common condition where the long-term force of the blood against your artery walls is high enough to cause heart disease or stroke.",
+    "precautions": [
+      "Monitor blood pressure at home with a calibrated digital cuff",
+      "Reduce daily dietary sodium intake to under 1,500 - 2,000 mg",
+      "Engage in 150 minutes of moderate aerobic exercise per week",
+      "Take prescribed antihypertensive medications consistently"
+    ],
+    "medications": ["ACE inhibitors (lisinopril)", "ARBs (losartan)", "Calcium channel blockers (amlodipine)", "Thiazide diuretics"],
+    "diet_advice": "Adopt the DASH diet (rich in fruits, vegetables, whole grains, potassium; low in saturated fat and sodium).",
+    "emergency_symptoms": ["Blood pressure reading above 180/120 mmHg with severe headache, chest pain, or visual changes (hypertensive crisis)"]
+  },
+  "Hyperthyroidism": {
+    "display_name": "Hyperthyroidism (Overactive Thyroid)",
+    "specialist": "Endocrinologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Hyperthyroidism occurs when the thyroid gland produces too much thyroid hormone, accelerating your body's metabolism and causing weight loss and rapid heartbeat.",
+    "precautions": [
+      "Consult an endocrinologist for TSH, Free T3, and Free T4 blood tests",
+      "Avoid high-iodine foods and kelp supplements",
+      "Monitor resting heart rate and avoid excessive caffeine",
+      "Protect eyes if Graves' ophthalmopathy is present"
+    ],
+    "medications": ["Anti-thyroid medications (methimazole, propylthiouracil)", "Beta-blockers (propranolol) for heart rate control", "Radioactive iodine therapy"],
+    "diet_advice": "Cruciferous vegetables, calcium, Vitamin D; limit iodized salt if advised by your endocrinologist.",
+    "emergency_symptoms": ["Thyroid storm: high fever, extreme heart palpitations (>140 bpm), agitation or delirium"]
+  },
+  "Hypoglycemia": {
+    "display_name": "Hypoglycemia (Low Blood Sugar)",
+    "specialist": "Endocrinologist / General Physician",
+    "severity": "High",
+    "is_emergency": true,
+    "description": "Hypoglycemia is a condition characterized by abnormally low blood glucose levels (below 70 mg/dL), leading to shaking, sweating, confusion, and dizziness.",
+    "precautions": [
+      "Apply the 15-15 Rule: Consume 15 grams of fast-acting carbohydrate and recheck glucose in 15 minutes",
+      "Carry glucose tablets, candies, or fruit juice at all times",
+      "Do not skip or delay scheduled meals",
+      "Review insulin or diabetes medication dosages with your doctor"
+    ],
+    "medications": ["Oral glucose tablets / gels", "Glucagon emergency kit / nasal glucagon (Baqsimi)"],
+    "diet_advice": "Complex carbohydrates paired with protein and fiber for sustained glucose release.",
+    "emergency_symptoms": ["Loss of consciousness or seizures", "Inability to swallow fluids"]
+  },
+  "Hypothyroidism": {
+    "display_name": "Hypothyroidism (Underactive Thyroid)",
+    "specialist": "Endocrinologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Hypothyroidism is a condition where the thyroid gland does not produce enough thyroid hormones, leading to fatigue, weight gain, depression, and cold sensitivity.",
+    "precautions": [
+      "Take prescribed levothyroxine daily on an empty stomach with a full glass of water",
+      "Wait at least 30 to 60 minutes after taking levothyroxine before eating breakfast or coffee",
+      "Get TSH blood levels monitored every 6 to 12 months",
+      "Engage in regular light exercise to boost energy and metabolism"
+    ],
+    "medications": ["Levothyroxine sodium (synthetic T4)", "Liothyronine (T3 in select cases)"],
+    "diet_advice": "Nutritious balanced diet; moderate iodine, selenium (Brazil nuts), and zinc; avoid excessive raw goitrogens.",
+    "emergency_symptoms": ["Extreme hypothermia, slow heart rate, severe confusion (myxedema coma)"]
+  },
+  "Impetigo": {
+    "display_name": "Impetigo (Bacterial Skin Infection)",
+    "specialist": "Dermatologist / Pediatrician",
+    "severity": "Low",
+    "is_emergency": false,
+    "description": "Impetigo is a highly contagious bacterial skin infection that causes honey-colored crusted sores, commonly around the nose and mouth.",
+    "precautions": [
+      "Wash sores gently with warm antibacterial soap and water",
+      "Do not scratch or pick at crusts to prevent spreading the bacteria",
+      "Wash infected person's clothes, towels, and bed linens separately in hot water",
+      "Keep sores covered with loose gauze bandages"
+    ],
+    "medications": ["Topical mupirocin 2% ointment", "Oral antibiotics (cephalexin, amoxicillin/clavulanate) for widespread lesions"],
+    "diet_advice": "Nutrient-rich immune-supporting foods; stay hydrated.",
+    "emergency_symptoms": ["High fever, swollen glands, or reddish urine (post-streptococcal glomerulonephritis)"]
+  },
+  "Jaundice": {
+    "display_name": "Jaundice (Hyperbilirubinemia)",
+    "specialist": "Gastroenterologist / Hepatologist",
+    "severity": "High",
+    "is_emergency": false,
+    "description": "Jaundice is a yellow discoloration of the skin, sclera (whites of the eyes), and mucous membranes caused by high levels of bilirubin in the blood.",
+    "precautions": [
+      "Consult a doctor promptly for comprehensive liver and biliary ultrasound testing",
+      "Completely avoid all alcohol and non-prescribed medications",
+      "Drink plenty of boiled water and clean fluids",
+      "Rest adequately and avoid strenuous physical exertion"
+    ],
+    "medications": ["Therapy directed at underlying liver/biliary cause", "Supportive antiemetics and hydration"],
+    "diet_advice": "Light, easily digestible carbohydrates, boiled vegetables, sugarcane juice (from hygienic sources), and fresh fruits; zero oily or fried food.",
+    "emergency_symptoms": ["Severe right upper quadrant pain, chills with high fever, vomiting, and mental confusion"]
+  },
+  "Malaria": {
+    "display_name": "Malaria",
+    "specialist": "Infectious Disease Specialist / Physician",
+    "severity": "High",
+    "is_emergency": true,
+    "description": "Malaria is a life-threatening disease caused by Plasmodium parasites transmitted to humans through the bites of infected female Anopheles mosquitoes.",
+    "precautions": [
+      "Get a prompt rapid diagnostic test (RDT) or peripheral blood smear",
+      "Complete the full course of prescribed Artemisinin-based Combination Therapy (ACT)",
+      "Sleep under insecticide-treated bed nets",
+      "Eliminate standing water around the home where mosquitoes breed"
+    ],
+    "medications": ["Artemisinin-based combination therapies (ACTs - e.g., artemether-lumefantrine)", "Chloroquine / Primaquine for P. vivax", "Paracetamol for fever"],
+    "diet_advice": "High-carbohydrate, easily digestible meals, coconut water, and soups to replenish electrolytes.",
+    "emergency_symptoms": ["Cerebral malaria signs: confusion, seizures, unconsciousness, severe anemia, blackish urine"]
+  },
+  "Migraine": {
+    "display_name": "Migraine",
+    "specialist": "Neurologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "A migraine is a neurological condition that can cause severe throbbing pain or a pulsing sensation, usually on one side of the head, accompanied by nausea and light sensitivity.",
+    "precautions": [
+      "Rest in a quiet, dark, cool room during an attack",
+      "Apply a cold cloth or ice pack to your forehead or temples",
+      "Maintain regular sleep schedules and meal times",
+      "Keep a headache diary to identify personal triggers (cheese, chocolate, stress, lights)"
+    ],
+    "medications": ["Triptans (sumatriptan, rizatriptan)", "NSAIDs or combination analgesics (aspirin, acetaminophen, caffeine)", "Anti-nausea medications", "Preventive medications (beta-blockers, CGRP antagonists)"],
+    "diet_advice": "Stay well hydrated; avoid MSG, aged cheeses, artificial sweeteners, and cured meats.",
+    "emergency_symptoms": ["Sudden explosive thunderclap headache", "Headache with fever, stiff neck, confusion, or focal numbness"]
+  },
+  "Osteoarthristis": {
+    "display_name": "Osteoarthritis",
+    "specialist": "Orthopedic Specialist / Rheumatologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Osteoarthritis is the most common form of arthritis, occurring when the protective cartilage that cushions the ends of the bones wears down over time.",
+    "precautions": [
+      "Maintain an optimal body weight to reduce stress on weight-bearing joints (knees, hips)",
+      "Engage in low-impact aerobic activities like cycling and aquatic exercise",
+      "Perform quadriceps and hamstrings strengthening exercises",
+      "Use supportive footwear and walking aids if necessary"
+    ],
+    "medications": ["Acetaminophen", "Topical NSAID gels (diclofenac)", "Oral NSAIDs", "Intra-articular hyaluronic acid or corticosteroid injections"],
+    "diet_advice": "Mediterranean diet rich in antioxidants, olive oil, and oily fish; maintain adequate Vitamin D.",
+    "emergency_symptoms": ["Joint that becomes acutely hot, intensely swollen, and impossible to move with fever (septic arthritis)"]
+  },
+  "Paralysis (brain hemorrhage)": {
+    "display_name": "Hemorrhagic Stroke / Paralysis",
+    "specialist": "Neurologist / Neurosurgeon",
+    "severity": "Critical",
+    "is_emergency": true,
+    "description": "A hemorrhagic stroke occurs when a weakened blood vessel ruptures and bleeds into the surrounding brain, causing sudden paralysis and neurological impairment.",
+    "precautions": [
+      "CALL EMERGENCY NUMBERS (911 / 112) IMMEDIATELY - Time is Brain!",
+      "Apply the FAST test: Face drooping, Arm weakness, Speech difficulty, Time to call",
+      "Do NOT administer aspirin or blood thinners (these worsen bleeding)",
+      "Keep the patient lying flat with head slightly elevated until medical arrival"
+    ],
+    "medications": ["Immediate emergency neuro-critical care", "Blood pressure management", "Surgical decompression or clipping"],
+    "diet_advice": "Strict medical hospital protocol.",
+    "emergency_symptoms": ["Sudden numbness or paralysis on one side of face/body", "Sudden confusion, trouble speaking or understanding", "Loss of balance"]
+  },
+  "Peptic ulcer diseae": {
+    "display_name": "Peptic Ulcer Disease",
+    "specialist": "Gastroenterologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Peptic ulcers are painful open sores that develop on the inside lining of your stomach and the upper portion of your small intestine, often due to H. pylori or NSAIDs.",
+    "precautions": [
+      "Get tested for Helicobacter pylori bacteria",
+      "Avoid NSAIDs like ibuprofen, aspirin, and naproxen",
+      "Limit consumption of spicy, acidic foods and caffeinated beverages",
+      "Quit smoking and avoid all alcohol"
+    ],
+    "medications": ["Proton pump inhibitors (esomeprazole, pantoprazole)", "Antibiotics for H. pylori eradication", "Sucralfate (mucosal protectant)"],
+    "diet_advice": "Probiotic foods (kefir, yogurt), broccoli, apples, cabbage; avoid midnight snacking.",
+    "emergency_symptoms": ["Vomiting blood or coffee-ground material", "Black tarry stools", "Sudden, sharp, intolerable abdominal pain"]
+  },
+  "Pneumonia": {
+    "display_name": "Pneumonia",
+    "specialist": "Pulmonologist / General Physician",
+    "severity": "High",
+    "is_emergency": true,
+    "description": "Pneumonia is an infection that inflames the air sacs in one or both lungs, which may fill with fluid or pus, causing cough with phlegm, fever, chills, and breathing trouble.",
+    "precautions": [
+      "Seek medical evaluation and chest X-ray without delay",
+      "Take prescribed antibiotics or antivirals exactly as instructed until finished",
+      "Monitor blood oxygen saturation with a pulse oximeter (keep above 94%)",
+      "Rest thoroughly and drink plenty of warm fluids"
+    ],
+    "medications": ["Antibiotics (azithromycin, amoxicillin/clavulanate, levofloxacin)", "Cough expectorants", "Fever reducers (paracetamol)", "Supplemental oxygen if needed"],
+    "diet_advice": "Protein-rich soups, warm broths, ginger tea; avoid chilled drinks and dairy if it thickens phlegm.",
+    "emergency_symptoms": ["Pulse oximeter reading below 92%", "Severe chest pain when inhaling", "Bluish lips or fingertips, confusion"]
+  },
+  "Psoriasis": {
+    "display_name": "Psoriasis",
+    "specialist": "Dermatologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Psoriasis is a chronic autoimmune skin disease that causes rapid buildup of skin cells, forming scales and itchy, dry red patches.",
+    "precautions": [
+      "Keep skin moisturized daily with thick ointments or creams",
+      "Avoid skin injuries, cuts, sunburns, or scratching (Koebner phenomenon)",
+      "Manage stress through mindfulness and gentle exercise",
+      "Take lukewarm baths with colloidal oatmeal or bath oils"
+    ],
+    "medications": ["Topical corticosteroids", "Vitamin D analogues (calcipotriene)", "Coal tar preparations", "Biologics or oral immunosuppressants for moderate-severe cases"],
+    "diet_advice": "Anti-inflammatory diet rich in omega-3 fatty acids, flaxseeds, and leafy greens; reduce alcohol and red meat.",
+    "emergency_symptoms": ["Erythrodermic psoriasis: widespread redness covering more than 80% of body with shivering or fever"]
+  },
+  "Tuberculosis": {
+    "display_name": "Tuberculosis (Pulmonary TB)",
+    "specialist": "Pulmonologist / Infectious Disease Specialist",
+    "severity": "High",
+    "is_emergency": false,
+    "description": "Tuberculosis is a potentially serious infectious disease that mainly affects the lungs, caused by Mycobacterium tuberculosis bacteria.",
+    "precautions": [
+      "Adhere strictly to the full 6-to-9 month course of Directly Observed Treatment (DOTS)",
+      "Wear a mask and stay in well-ventilated rooms during initial infectious phase",
+      "Never skip doses to prevent Multi-Drug Resistant TB (MDR-TB)",
+      "Ensure close household contacts are tested"
+    ],
+    "medications": ["Isoniazid, Rifampin, Pyrazinamide, Ethambutol (HRZE regimen)", "Pyridoxine (Vitamin B6) to prevent neuropathy"],
+    "diet_advice": "High-protein, energy-dense meals (eggs, milk, pulses, nuts) to regain lost body weight.",
+    "emergency_symptoms": ["Coughing up significant amounts of bright red blood (hemoptysis)", "Acute respiratory distress"]
+  },
+  "Typhoid": {
+    "display_name": "Typhoid Fever",
+    "specialist": "Infectious Disease Specialist / Physician",
+    "severity": "High",
+    "is_emergency": true,
+    "description": "Typhoid fever is a life-threatening bacterial infection caused by Salmonella typhi, usually spread through contaminated food or water.",
+    "precautions": [
+      "Obtain blood culture or Widal test for definitive diagnosis",
+      "Drink only boiled, bottled, or chemically disinfected water",
+      "Complete the entire antibiotic regimen prescribed by your doctor",
+      "Wash hands thoroughly with soap after using the toilet"
+    ],
+    "medications": ["Antibiotics (ceftriaxone, azithromycin, ciprofloxacin)", "Oral rehydration therapy", "Antipyretics for high step-ladder fever"],
+    "diet_advice": "Bland, easily digestible foods like porridge, boiled potatoes, soft rice, and banana; avoid high-fiber raw vegetables and fried foods.",
+    "emergency_symptoms": ["Severe persistent abdominal pain, rigid tender abdomen (risk of bowel perforation)", "Extreme confusion or delirium"]
+  },
+  "Urinary tract infection": {
+    "display_name": "Urinary Tract Infection (UTI)",
+    "specialist": "Urologist / Nephrologist / General Physician",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "A UTI is an infection in any part of the urinary system (kidneys, ureters, bladder, and urethra), most commonly involving the lower urinary tract.",
+    "precautions": [
+      "Drink plenty of water to help flush bacteria from your urinary tract",
+      "Wipe from front to back after urinating or bowel movements",
+      "Urinate promptly after sexual intercourse",
+      "Do not hold urine for extended periods"
+    ],
+    "medications": ["Antibiotics (nitrofurantoin, trimethoprim-sulfamethoxazole, fosfomycin)", "Urinary analgesics (phenazopyridine for pain relief)"],
+    "diet_advice": "Pure unsweetened cranberry juice, high water intake; avoid bladder irritants like coffee, alcohol, and spicy foods.",
+    "emergency_symptoms": ["High fever with chills and severe lower back / flank pain (indicates kidney infection - pyelonephritis)"]
+  },
+  "Varicose veins": {
+    "display_name": "Varicose Veins",
+    "specialist": "Vascular Surgeon / Phlebologist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Varicose veins are swollen, twisted veins that lie just under the surface of the skin, most commonly in the legs, caused by weakened vein valves.",
+    "precautions": [
+      "Wear graduated compression stockings during daily activities",
+      "Elevate your legs above heart level for 15 minutes three times daily",
+      "Avoid standing or sitting in one position for long stretches",
+      "Maintain a healthy body weight and engage in daily walking"
+    ],
+    "medications": ["Flavonoid venoactive agents", "Topical pain-relief gels", "Endovenous laser ablation or sclerotherapy for advanced cases"],
+    "diet_advice": "High-fiber foods to prevent constipation (which raises venous pressure); rutin-rich foods like buckwheat and citrus.",
+    "emergency_symptoms": ["Sudden severe redness, pain, and swelling in one leg (risk of deep vein thrombosis)", "Bleeding from a ruptured varicose vein"]
+  },
+  "hepatitis A": {
+    "display_name": "Hepatitis A",
+    "specialist": "Gastroenterologist / Infectious Disease Specialist",
+    "severity": "Moderate",
+    "is_emergency": false,
+    "description": "Hepatitis A is a highly contagious, short-term liver infection caused by the hepatitis A virus (HAV), predominantly spread through contaminated food or water.",
+    "precautions": [
+      "Practice meticulous hand hygiene with soap and running water",
+      "Drink only boiled, safe drinking water and avoid street food",
+      "Rest thoroughly as fatigue can persist for several weeks",
+      "Avoid all alcohol and hepatotoxic medications during recovery"
+    ],
+    "medications": ["Supportive care and hydration", "Antiemetics if nausea is severe", "Vaccination for household contacts"],
+    "diet_advice": "Small, frequent carbohydrate-rich meals; fruit juices, boiled vegetables, and soups; avoid all fatty or greasy meals.",
+    "emergency_symptoms": ["Inability to retain liquids, extreme dizziness, dark cola-colored urine, or severe confusion"]
+  }
+}

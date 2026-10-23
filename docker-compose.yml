@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: healthai_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: disease_prediction_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: student702
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d disease_prediction_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: healthai_api_web
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: disease_prediction_db
+      DB_USER: postgres
+      DB_PASSWORD: student702
+      JWT_SECRET_KEY: bfa3e5db75be58606832834e42e33de3a77c1d575104d4e64b7ff03ade79f4ab
+      JWT_ALGORITHM: HS256
+      AI_MODEL_NAME: disease_model.pkl
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:

@@ -1,0 +1,4 @@
+Model,Mean accuracy (%),Accuracy standard deviation (%),Mean macro F1
+Random Forest,100.0,0.0,1.0
+Extra Trees,99.67,0.66,0.994
+Decision Tree,62.14,5.86,0.526

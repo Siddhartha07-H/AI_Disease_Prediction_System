@@ -1,0 +1,4 @@
+Model,Accuracy (%),Macro F1
+Random Forest,100.0,1.0
+Extra Trees,100.0,1.0
+Decision Tree,67.11,0.617
