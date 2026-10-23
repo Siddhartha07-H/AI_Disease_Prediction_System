@@ -1,2 +1,15 @@
+[project]
 [tool.vercel]
-entrypoint = "main:app"
+entrypoint = "main.py"
+name = "healthai"
+version = "2.0.0"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "joblib",
+    "scikit-learn",
+    "pandas",
+    "numpy",
+    "psycopg2-binary",
+    "python-dotenv",
+]
