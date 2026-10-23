@@ -4,12 +4,11 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-v0.142-009688.svg)](https://fastapi.tiangolo.com/)
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-v1.9-F7931E.svg)](https://scikit-learn.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791.svg)](https://www.postgresql.org/)
-[![Android](https://img.shields.io/badge/Android-SDK%2034-3DDC84.svg)](https://developer.android.com/)
-[![Tests](https://img.shields.io/badge/Tests-20%20Passing-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-26%20Passing-brightgreen.svg)](tests/)
 
-An enterprise-ready, cross-platform artificial intelligence clinical decision-support and patient management system. The system evaluates 132 distinct symptoms across 41 human medical conditions, generates probabilistic differential diagnoses, provides clinical precautions and safe medication guidelines, books specialist doctor appointments, and outputs printable clinical reports.
+An enterprise-ready, cross-platform artificial intelligence clinical decision-support and patient management system. The system evaluates 132 distinct symptoms across 41 human medical conditions, generates probabilistic differential diagnoses, provides clinical precautions and safe medication guidelines, books specialist doctor appointments, includes a dedicated Doctor Clinical Management Portal, and outputs printable clinical reports.
 
-Fully prepared and optimized for **Web Hosting**, **Docker Containers**, and the **Google Play Store**.
+Fully prepared and optimized for **Web Hosting**, **PWA Mobile Access**, and **Docker Containers**.
 
 ---
 
@@ -20,27 +19,23 @@ AI_Disease_Prediction_System/
 ├── backend/                   # FastAPI high-performance asynchronous API
 │   ├── main.py                # REST endpoints, prediction engine, static hosting
 │   ├── database.py            # PostgreSQL connection pool and CRUD operations
-│   ├── auth.py                # Patient registration, login, and JWT token issuance
-│   └── security.py            # Bearer token verification and RBAC
-├── frontend/                  # Modern, responsive patient portal & PWA
+│   ├── auth.py                # Patient & Doctor registration, login, and JWT tokens
+│   ├── security.py            # Bearer token verification and RBAC
+│   └── security_middleware.py # Rate-limiting, OWASP security headers, DDoS defense
+├── frontend/                  # Modern, responsive clinical portal & PWA
 │   ├── index.html             # Patient dashboard, reports, appointments, stats
 │   ├── predict.html           # Multi-symptom selector and diagnostic result view
-│   ├── login.html             # Patient sign-in with password reveal
-│   ├── register.html          # New patient account onboarding
-│   ├── privacy.html           # Google Play & HIPAA/GDPR privacy policy
+│   ├── login.html             # Patient sign-in with demo helper
+│   ├── register.html          # Patient onboarding
+│   ├── doctor-login.html      # Doctor & specialist sign-in
+│   ├── doctor-register.html   # Medical practitioner licensing onboarding
+│   ├── doctor-dashboard.html  # Doctor consultation queue and patient records
+│   ├── privacy.html           # Health & medical privacy policy
 │   ├── terms.html             # Clinical liability agreement & terms of use
 │   ├── style.css              # Custom medical design system (Plus Jakarta Sans)
-│   ├── script.js              # Client engine, dynamic API resolution, Android bridge
+│   ├── script.js              # Client engine, dynamic API resolution
 │   ├── manifest.json          # Progressive Web App (PWA) manifest
 │   └── sw.js                  # Service Worker for offline caching
-├── android/                   # Native Android Studio Project (Target SDK 34)
-│   ├── app/src/main/
-│   │   ├── AndroidManifest.xml # Permissions, FileProvider, Play Store configurations
-│   │   ├── java/com/healthai/diseaseprediction/
-│   │   │   ├── MainActivity.kt # WebView, SwipeRefresh, Back stack, WebAppInterface
-│   │   │   ├── WebAppInterface.kt # Native Android toast, haptic, and share bridge
-│   │   │   └── NetworkUtils.kt # Active network listener
-│   │   └── assets/www/        # Bundled offline web client
 ├── database/                  # Relational database scripts
 │   ├── schema.sql             # Table schemas, foreign keys, and indexes
 │   ├── init_db.py             # One-step database migration and seeder
@@ -49,13 +44,14 @@ AI_Disease_Prediction_System/
 │   ├── disease_model.pkl      # Decision Tree classifier (132 features)
 │   ├── random_forest_candidate.pkl # Random Forest probability model
 │   └── train_model.py         # Training and evaluation script
-├── tests/                     # Automated Pytest test suite (20 tests)
+├── tests/                     # Automated Pytest test suite (26 tests)
 │   ├── test_ai_model.py       # Model accuracy and probability tests
 │   ├── test_auth.py           # Password hashing and JWT security tests
 │   ├── test_predict_api.py    # Endpoint validations and safety safeguards
-│   └── test_database.py       # Database persistence and relations tests
+│   ├── test_database.py       # Database persistence and relations tests
+│   ├── test_doctor.py         # Doctor registration, login, and dashboard tests
+│   └── test_security_and_load.py # Security headers, rate limiting & concurrency tests
 ├── docs/                      # Production guides
-│   ├── PLAY_STORE_GUIDE.md    # Step-by-step Google Play Console publishing guide
 │   ├── API_DOCUMENTATION.md   # Complete REST API reference
 │   └── DEPLOYMENT_GUIDE.md    # Cloud and Docker deployment instructions
 ├── Dockerfile                 # Production container image
@@ -94,24 +90,9 @@ python database/init_db.py
 
 ### 4. Run the Full Application (Web + API)
 ```bash
-uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
+uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 Open **`http://127.0.0.1:8000`** in your browser to access the complete Patient Dashboard!
-
----
-
-## 📱 Google Play Store Android Application
-
-The project includes an **Android Studio project** ready to build an APK or App Bundle (`.aab`):
-
-1. Open the `android/` directory in **Android Studio**.
-2. Run on an Android Emulator or connected physical device.
-3. To generate a signed bundle for the Google Play Store:
-   ```bash
-   cd android
-   .\gradlew.bat bundleRelease
-   ```
-4. Follow the complete step-by-step submission checklist in [docs/PLAY_STORE_GUIDE.md](docs/PLAY_STORE_GUIDE.md).
 
 ---
 

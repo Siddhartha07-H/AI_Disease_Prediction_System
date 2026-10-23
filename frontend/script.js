@@ -1,10 +1,10 @@
 /**
  * HealthAI - Frontend Engine & Clinical Client
- * Fully compatible with Web Browsers, PWA, and Android WebView (Play Store)
+ * Cross-Platform Web Application & Progressive Web App (PWA)
  */
 
 // =========================================================
-// 1. DYNAMIC API RESOLUTION & NATIVE ANDROID BRIDGE
+// 1. DYNAMIC API RESOLUTION & WEB UTILITIES
 // =========================================================
 const API_URL = (function () {
     const custom = localStorage.getItem("healthai_api_url");
@@ -20,27 +20,18 @@ const API_URL = (function () {
     return "http://127.0.0.1:8000";
 })();
 
-const isAndroidApp = () => typeof window.Android !== "undefined";
-
 function triggerHaptic(duration = 50) {
-    if (isAndroidApp() && window.Android.vibrate) {
-        window.Android.vibrate(duration);
-    } else if (navigator.vibrate) {
+    if (navigator.vibrate) {
         navigator.vibrate(duration);
     }
 }
 
 function showNativeToast(message) {
-    if (isAndroidApp() && window.Android.showToast) {
-        window.Android.showToast(message);
-    }
+    // Web toast notification
+    console.log("[HealthAI]", message);
 }
 
 function shareMedicalReport(title, text) {
-    if (isAndroidApp() && window.Android.shareReport) {
-        window.Android.shareReport(title, text);
-        return;
-    }
     if (navigator.share) {
         navigator.share({ title, text }).catch(() => { });
         return;

@@ -45,12 +45,3 @@ Ideal for **DigitalOcean Droplets**, **AWS EC2**, **Linode**, **Hetzner**, or an
 
 ---
 
-## Option 3: Android App Connection Configuration
-
-When you host your backend at `https://healthai.yourdomain.com`:
-1. In `android/app/src/main/res/values/strings.xml`, update:
-   ```xml
-   <string name="default_web_url">https://healthai.yourdomain.com</string>
-   ```
-2. Or in `android/app/src/main/java/com/healthai/diseaseprediction/MainActivity.kt`, update `targetUrl` to point to your live HTTPS domain.
-3. Build the release `.aab` bundle and submit to Google Play Console!
