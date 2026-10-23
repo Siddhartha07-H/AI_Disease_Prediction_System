@@ -1,6 +1,4 @@
 [project]
-[tool.vercel]
-entrypoint = "main:app"
 name = "healthai"
 version = "2.0.0"
 dependencies = [
@@ -13,3 +11,6 @@ dependencies = [
     "psycopg2-binary",
     "python-dotenv",
 ]
+
+[tool.vercel]
+entrypoint = "main:app"
