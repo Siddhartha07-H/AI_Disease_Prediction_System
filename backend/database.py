@@ -38,6 +38,7 @@ def get_db_pool() -> ThreadedConnectionPool:
     global _db_pool
     if _db_pool is None or _db_pool.closed:
         database_name = _resolve_db_name()
+        timeout_sec = int(os.getenv("DB_CONNECT_TIMEOUT", "3"))
         _db_pool = ThreadedConnectionPool(
             minconn=POOL_MIN_CONNECTIONS,
             maxconn=POOL_MAX_CONNECTIONS,
@@ -46,6 +47,7 @@ def get_db_pool() -> ThreadedConnectionPool:
             database=database_name,
             user=os.getenv("DB_USER", "postgres"),
             password=os.getenv("DB_PASSWORD", ""),
+            connect_timeout=timeout_sec,
         )
     return _db_pool
 
@@ -89,6 +91,7 @@ def get_connection():
     Acquire a connection from the connection pool.
     Gracefully falls back to a direct connection if the pool is unavailable.
     """
+    timeout_sec = int(os.getenv("DB_CONNECT_TIMEOUT", "3"))
     try:
         pool = get_db_pool()
         raw_conn = pool.getconn()
@@ -101,6 +104,7 @@ def get_connection():
             database=_resolve_db_name(),
             user=os.getenv("DB_USER", "postgres"),
             password=os.getenv("DB_PASSWORD", ""),
+            connect_timeout=timeout_sec,
         )
 
 
