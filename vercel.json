@@ -6,11 +6,5 @@
     "api/index.py": {
       "includeFiles": "ai_model/**,datasets/**,database/**,frontend/**,backend/**"
     }
-  },
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/main.py"
-    }
-  ]
+  }
 }

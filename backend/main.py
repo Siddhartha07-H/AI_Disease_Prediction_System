@@ -271,6 +271,7 @@ class DoctorProfileUpdate(BaseModel):
 # Core API Endpoints
 # -------------------------------------------------------------
 @app.get("/api/status")
+@app.get("/health")
 def system_status():
     return {
         "status": "online",
@@ -710,6 +711,13 @@ def update_doctor_settings(
 # Serve Static Frontend Files & Web App
 # -------------------------------------------------------------
 if FRONTEND_DIR.exists():
+    @app.get("/")
+    def serve_root():
+        index_file = FRONTEND_DIR / "index.html"
+        if index_file.exists():
+            return FileResponse(index_file)
+        return {"status": "online", "service": "HealthAI Disease Prediction System", "docs": "/docs"}
+
     @app.get("/login")
     def serve_login():
         return FileResponse(FRONTEND_DIR / "login.html")
@@ -747,6 +755,10 @@ if FRONTEND_DIR.exists():
 
     # Mount entire frontend at root (serves index.html at /, style.css, script.js, *.html)
     app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
+else:
+    @app.get("/")
+    def serve_fallback_root():
+        return {"status": "online", "service": "HealthAI Disease Prediction System", "docs": "/docs"}
 
 
 if __name__ == "__main__":
