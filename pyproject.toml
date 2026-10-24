@@ -1,2 +1,22 @@
+
+[project]
+name = "healthai"
+version = "2.0.0"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "joblib",
+    "scikit-learn",
+    "pandas",
+    "numpy",
+    "psycopg2-binary",
+    "python-dotenv",
+    "PyJWT",
+    "pwdlib",
+    "argon2-cffi",
+    "email-validator",
+]
+
 [tool.vercel]
 entrypoint = "main:app"
