@@ -122,19 +122,24 @@ class SecurityAndTrafficMiddleware(BaseHTTPMiddleware):
         # 3. Process request
         response: Response = await call_next(request)
 
-        # 4. Attach standard HTTP security headers
+        # 4. Attach standard HTTP security headers (OWASP standards)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "SAMEORIGIN"
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
 
-        # 5. Traffic load optimization: Cache headers for static assets, no-cache for private health data
+        # 5. Attach rate-limiting awareness headers for mobile & API clients
+        if not is_static:
+            limit = self.LIMITS.get(route_type, self.LIMITS["api"])
+            response.headers["X-RateLimit-Limit"] = str(limit)
+
+        # 6. Heavy Traffic Load Optimization: Aggressive caching for static assets, no-cache for private medical data
         if is_static:
-            # Tell browsers to cache static files for 1 hour to reduce heavy network traffic
-            response.headers["Cache-Control"] = "public, max-age=3600, must-revalidate"
-        elif path.startswith("/api/") or path.startswith("/predict") or path.startswith("/doctor"):
-            # Never cache private medical or auth data
+            # Cache static assets for 24 hours with stale-while-revalidate for instant mobile rendering
+            response.headers["Cache-Control"] = "public, max-age=86400, stale-while-revalidate=3600"
+        elif path.startswith("/api/") or path.startswith("/predict") or path.startswith("/doctor") or path.startswith("/login"):
+            # Never cache private medical or authentication data
             response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
 
         return response

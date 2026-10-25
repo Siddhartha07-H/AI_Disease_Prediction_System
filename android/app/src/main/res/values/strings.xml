@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">HealthAI</string>
-    <string name="app_tagline">AI Disease Prediction &amp; Health Assistant</string>
-    <string name="default_web_url">http://10.0.2.2:8000</string>
-    <string name="offline_title">No Internet Connection</string>
-    <string name="offline_message">HealthAI requires an active internet connection to evaluate clinical machine learning models.</string>
-    <string name="retry_button">Retry Connection</string>
-    <string name="share_report_subject">HealthAI Diagnostic Summary Report</string>
-</resources>

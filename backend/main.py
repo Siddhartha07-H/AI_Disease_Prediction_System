@@ -16,6 +16,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -213,10 +214,13 @@ app = FastAPI(
     version="2.0.0",
 )
 
+# High-traffic Bandwidth & Latency Optimization (GZip Compression for payloads > 1000 bytes)
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
 # OWASP Security Headers & Traffic Rate-Limiting Protection
 app.add_middleware(SecurityAndTrafficMiddleware)
 
-# CORS: Safe configuration supporting Browsers, PWA, Android WebView and Cloud access
+# CORS: Safe configuration supporting Browsers, PWA, and Cloud access
 app.add_middleware(
     CORSMiddleware,
     allow_origin_regex=r"^https?://.*",

@@ -7,9 +7,11 @@
 // 1. DYNAMIC API RESOLUTION & WEB UTILITIES
 // =========================================================
 const API_URL = (function () {
+    // 1. Custom override in localStorage
     const custom = localStorage.getItem("healthai_api_url");
-    if (custom) return custom;
+    if (custom) return custom.replace(/\/+$/, "");
 
+    // 2. Current origin (if hosted over HTTP/HTTPS)
     if (window.location.origin && window.location.origin.startsWith("http")) {
         // If loaded from Live Server or custom port (e.g., 5500, 3000), target FastAPI backend on 8000
         if (window.location.port && window.location.port !== "8000") {
@@ -20,29 +22,17 @@ const API_URL = (function () {
     return "http://127.0.0.1:8000";
 })();
 
-const isAndroidApp = () => typeof window.Android !== "undefined";
-
 function triggerHaptic(duration = 50) {
-    if (isAndroidApp() && window.Android.vibrate) {
-        window.Android.vibrate(duration);
-    } else if (navigator.vibrate) {
+    if (navigator.vibrate) {
         navigator.vibrate(duration);
     }
 }
 
 function showNativeToast(message) {
-    if (isAndroidApp() && window.Android.showToast) {
-        window.Android.showToast(message);
-    } else {
-        console.log("[HealthAI]", message);
-    }
+    console.log("[HealthAI]", message);
 }
 
 function shareMedicalReport(title, text) {
-    if (isAndroidApp() && window.Android.shareReport) {
-        window.Android.shareReport(title, text);
-        return;
-    }
     if (navigator.share) {
         navigator.share({ title, text }).catch(() => { });
         return;
@@ -133,7 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
     initAuthForms();
     initLogoutHandlers();
 
-    // Page-specific modules
     if (document.getElementById("symptoms-selector-container")) {
         loadSymptomsList();
     }
@@ -297,7 +286,7 @@ function initAuthForms() {
 }
 
 // =========================================================
-// 7. SYMPTOM CHECKER & AI PREDICTION
+// 7. SYMPTOM CHECKER & AI PREDICTION (ONLINE & OFFLINE RESILIENT)
 // =========================================================
 async function loadSymptomsList() {
     const container = document.getElementById("symptoms-selector-container");
@@ -305,23 +294,95 @@ async function loadSymptomsList() {
 
     container.innerHTML = "<div style='padding:20px;text-align:center;color:var(--text-muted);'>Loading clinical symptoms...</div>";
 
+    let data = null;
     try {
-        const res = await fetch(`${API_URL}/symptoms`);
-        const data = await res.json();
-
-        allSymptomsDetailed = data.detailed || data.symptoms.map((s) => ({
-            id: s,
-            name: s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-            category: "General",
-        }));
-
-        renderCategoryPills();
-        renderSymptomCheckboxes();
-        initSymptomSearch();
-        initPredictButton();
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        const res = await fetch(`${API_URL}/symptoms`, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (res.ok) {
+            data = await res.json();
+            localStorage.setItem("healthai_cached_symptoms", JSON.stringify(data));
+        }
     } catch (err) {
-        container.innerHTML = `<div style="padding:20px;color:var(--danger);">Error loading symptoms: ${err.message}. Check backend connection.</div>`;
+        console.warn("[HealthAI] Backend unreachable, loading cached/offline catalog...", err);
     }
+
+    if (!data) {
+        const cached = localStorage.getItem("healthai_cached_symptoms");
+        if (cached) {
+            try { data = JSON.parse(cached); } catch (e) { }
+        }
+    }
+
+    if (!data) {
+        data = { detailed: getOfflineSymptomsCatalog() };
+    }
+
+    allSymptomsDetailed = data.detailed || (data.symptoms ? data.symptoms.map((s) => ({
+        id: s,
+        name: s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        category: "General",
+    })) : getOfflineSymptomsCatalog());
+
+    renderCategoryPills();
+    renderSymptomCheckboxes();
+    initSymptomSearch();
+    initPredictButton();
+}
+
+function getOfflineSymptomsCatalog() {
+    const raw = [
+        ["itching","Skin & Hair"],["skin_rash","Skin & Hair"],["nodal_skin_eruptions","Skin & Hair"],
+        ["continuous_sneezing","Respiratory & Chest"],["shivering","General & Systemic"],["chills","General & Systemic"],
+        ["joint_pain","Musculoskeletal"],["stomach_pain","Gastrointestinal"],["acidity","Gastrointestinal"],
+        ["ulcers_on_tongue","Gastrointestinal"],["muscle_wasting","Musculoskeletal"],["vomiting","Gastrointestinal"],
+        ["burning_micturition","Urinary & Renal"],["spotting_urination","Urinary & Renal"],["fatigue","General & Systemic"],
+        ["weight_gain","General & Systemic"],["anxiety","Neurological"],["cold_hands_and_feets","General & Systemic"],
+        ["mood_swings","Neurological"],["weight_loss","General & Systemic"],["restlessness","Neurological"],
+        ["lethargy","General & Systemic"],["patches_in_throat","Respiratory & Chest"],["irregular_sugar_level","General & Systemic"],
+        ["cough","Respiratory & Chest"],["high_fever","General & Systemic"],["sunken_eyes","General & Systemic"],
+        ["breathlessness","Respiratory & Chest"],["sweating","General & Systemic"],["dehydration","General & Systemic"],
+        ["indigestion","Gastrointestinal"],["headache","Neurological"],["yellowish_skin","Skin & Hair"],
+        ["dark_urine","Urinary & Renal"],["nausea","Gastrointestinal"],["loss_of_appetite","Gastrointestinal"],
+        ["pain_behind_the_eyes","Neurological"],["back_pain","Musculoskeletal"],["constipation","Gastrointestinal"],
+        ["abdominal_pain","Gastrointestinal"],["diarrhoea","Gastrointestinal"],["mild_fever","General & Systemic"],
+        ["yellow_urine","Urinary & Renal"],["yellowing_of_eyes","General & Systemic"],["acute_liver_failure","Gastrointestinal"],
+        ["fluid_overload","General & Systemic"],["swelling_of_stomach","Gastrointestinal"],["swelled_lymph_nodes","General & Systemic"],
+        ["malaise","General & Systemic"],["blurred_and_distorted_vision","Neurological"],["phlegm","Respiratory & Chest"],
+        ["throat_irritation","Respiratory & Chest"],["redness_of_eyes","General & Systemic"],["sinus_pressure","Respiratory & Chest"],
+        ["runny_nose","Respiratory & Chest"],["congestion","Respiratory & Chest"],["chest_pain","Respiratory & Chest"],
+        ["weakness_in_limbs","Musculoskeletal"],["fast_heart_rate","General & Systemic"],["pain_during_bowel_movements","Gastrointestinal"],
+        ["pain_in_anal_region","Gastrointestinal"],["bloody_stool","Gastrointestinal"],["irritation_in_anus","Gastrointestinal"],
+        ["neck_pain","Musculoskeletal"],["dizziness","Neurological"],["cramps","Musculoskeletal"],
+        ["bruising","Skin & Hair"],["obesity","General & Systemic"],["swollen_legs","Musculoskeletal"],
+        ["swollen_blood_vessels","General & Systemic"],["puffy_face_and_eyes","Skin & Hair"],["enlarged_thyroid","General & Systemic"],
+        ["brittle_nails","Skin & Hair"],["swollen_extremeties","Musculoskeletal"],["excessive_hunger","General & Systemic"],
+        ["extra_marital_contacts","General & Systemic"],["drying_and_tingling_lips","Skin & Hair"],["slurred_speech","Neurological"],
+        ["knee_pain","Musculoskeletal"],["hip_joint_pain","Musculoskeletal"],["muscle_weakness","Musculoskeletal"],
+        ["stiff_neck","Musculoskeletal"],["swelling_joints","Musculoskeletal"],["movement_stiffness","Musculoskeletal"],
+        ["spinning_movements","Neurological"],["loss_of_balance","Neurological"],["unsteadiness","Neurological"],
+        ["weakness_of_one_body_side","Neurological"],["loss_of_smell","Neurological"],["bladder_discomfort","Urinary & Renal"],
+        ["foul_smell_of_urine","Urinary & Renal"],["continuous_feel_of_urine","Urinary & Renal"],["passage_of_gases","Gastrointestinal"],
+        ["internal_itching","Skin & Hair"],["toxic_look_(typhos)","General & Systemic"],["depression","Neurological"],
+        ["irritability","Neurological"],["muscle_pain","Musculoskeletal"],["altered_sensorium","Neurological"],
+        ["red_spots_over_body","Skin & Hair"],["belly_pain","Gastrointestinal"],["abnormal_menstruation","General & Systemic"],
+        ["dischromic_patches","Skin & Hair"],["watering_from_eyes","General & Systemic"],["increased_appetite","General & Systemic"],
+        ["polyuria","Urinary & Renal"],["family_history","General & Systemic"],["mucoid_sputum","Respiratory & Chest"],
+        ["rusty_sputum","Respiratory & Chest"],["lack_of_concentration","Neurological"],["visual_disturbances","Neurological"],
+        ["receiving_blood_transfusion","General & Systemic"],["receiving_unsterile_injections","General & Systemic"],["coma","Neurological"],
+        ["stomach_bleeding","Gastrointestinal"],["distention_of_abdomen","Gastrointestinal"],["history_of_alcohol_consumption","General & Systemic"],
+        ["fluid_overload.1","General & Systemic"],["blood_in_sputum","Respiratory & Chest"],["prominent_veins_on_calf","General & Systemic"],
+        ["palpitations","General & Systemic"],["painful_walking","Musculoskeletal"],["pus_filled_pimples","Skin & Hair"],
+        ["blackheads","Skin & Hair"],["scurring","Skin & Hair"],["skin_peeling","Skin & Hair"],
+        ["silver_like_dusting","Skin & Hair"],["small_dents_in_nails","Skin & Hair"],["inflammatory_nails","Skin & Hair"],
+        ["blister","Skin & Hair"],["red_sore_around_nose","Skin & Hair"],["yellow_crust_ooze","Skin & Hair"]
+    ];
+    return raw.map(([id, category]) => ({
+        id,
+        name: id.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        category
+    }));
 }
 
 function renderCategoryPills() {

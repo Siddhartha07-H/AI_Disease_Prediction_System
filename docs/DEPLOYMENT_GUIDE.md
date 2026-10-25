@@ -43,14 +43,3 @@ Ideal for **DigitalOcean Droplets**, **AWS EC2**, **Linode**, **Hetzner**, or an
      - `JWT_SECRET_KEY`: (Secure random string)
      - `AI_MODEL_NAME`: `disease_model.pkl`
 
----
-
-## Option 3: Android App Connection Configuration
-
-When you host your backend at `https://healthai.yourdomain.com` (or test on local network):
-1. In `android/app/src/main/res/values/strings.xml`, update:
-   ```xml
-   <string name="default_web_url">https://healthai.yourdomain.com</string>
-   ```
-2. Run `android/build_play_store_bundle.bat` or open `android/` in Android Studio.
-3. Build the signed `.aab` bundle and submit to Google Play Console!

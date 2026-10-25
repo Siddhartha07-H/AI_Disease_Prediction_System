@@ -1,4 +1,5 @@
 
+import logging
 import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -27,6 +28,7 @@ JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 ACCESS_TOKEN_MINUTES = 60 * 24  # 24 hours for seamless clinical session
 
 router = APIRouter(tags=["Authentication"])
+logger = logging.getLogger("healthai.auth")
 password_hasher = PasswordHash.recommended()
 
 
@@ -146,9 +148,15 @@ def register_patient(data: RegisterInput):
             detail="An account with this email already exists.",
         )
 
-    except psycopg2.Error:
+    except psycopg2.Error as exc:
         if connection is not None:
             connection.rollback()
+
+        logger.error(
+            "Patient registration database error: %s (pgcode: %s)",
+            type(exc).__name__,
+            getattr(exc, "pgcode", "N/A"),
+        )
 
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -244,6 +252,12 @@ def register_doctor(data: DoctorRegisterInput):
     except psycopg2.Error as exc:
         if connection is not None:
             connection.rollback()
+
+        logger.error(
+            "Doctor registration database error: %s (pgcode: %s)",
+            type(exc).__name__,
+            getattr(exc, "pgcode", "N/A"),
+        )
 
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
